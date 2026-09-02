@@ -93,3 +93,21 @@ CREATE TABLE dbo.[Event]
             CHECK (EventType IN ('Run', 'Walk', 'Cycle'))
 );
 GO
+
+      -- 4. CATEGORY
+       
+CREATE TABLE dbo.Category
+    (
+        CategoryID INT IDENTITY(1,1) NOT NULL,
+        EventID INT NOT NULL,
+        CategoryName VARCHAR(100) NOT NULL,
+        CategoryType VARCHAR(20) NOT NULL,
+        Description VARCHAR(255) NULL,
+
+        CONSTRAINT PK_Category PRIMARY KEY (CategoryID),
+        CONSTRAINT FK_Category_Event FOREIGN KEY (EventID)
+            REFERENCES dbo.[Event] (EventID),
+        CONSTRAINT CK_Category_CategoryType
+            CHECK (CategoryType IN ('Age', 'Distance'))
+);
+GO
