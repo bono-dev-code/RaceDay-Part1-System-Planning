@@ -1,0 +1,77 @@
+name: Validate Part 1 Repository
+
+on:
+  push:
+    branches: ["main", "master"]
+  pull_request:
+    branches: ["main", "master"]
+  workflow_dispatch:
+
+jobs:
+  validate-structure:
+    name: Validate repository structure and documents
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Confirm required files
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          required_files=(
+            "README.md"
+            "docs/RaceDay_Part1_ERD.pdf"
+            "docs/RaceDay_API_Endpoint_Plan.pdf"
+            "docs/RaceDay_Database.sql"
+          )
+
+          for required_file in "${required_files[@]}"; do
+            if [[ ! -s "$required_file" ]]; then
+              echo "Missing or empty required file: $required_file"
+              exit 1
+            fi
+            echo "Found: $required_file"
+          done
+
+      - name: Validate PDF files
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          for pdf_file in \
+            "docs/RaceDay_Part1_ERD.pdf" \
+            "docs/RaceDay_API_Endpoint_Plan.pdf"; do
+            if [[ "$(head -c 4 "$pdf_file")" != "%PDF" ]]; then
+              echo "Invalid PDF file: $pdf_file"
+              exit 1
+            fi
+            echo "Valid PDF: $pdf_file"
+          done
+
+      - name: Validate SQL schema and seed data
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          sql_file="docs/RaceDay_Database.sql"
+          table_count=$(grep -Eic '^[[:space:]]*CREATE[[:space:]]+TABLE' "$sql_file")
+
+          if [[ "$table_count" -ne 6 ]]; then
+            echo "Expected 6 CREATE TABLE statements but found $table_count."
+            exit 1
+          fi
+
+          grep -Eqi 'PRIMARY[[:space:]]+KEY' "$sql_file"
+          grep -Eqi 'FOREIGN[[:space:]]+KEY' "$sql_file"
+          grep -Eqi 'UNIQUE[[:space:]]*\(' "$sql_file"
+          grep -Eqi 'DEFAULT' "$sql_file"
+          grep -Eqi 'INSERT[[:space:]]+INTO' "$sql_file"
+
+          echo "SQL schema and seed-data checks passed."
+
+      - name: Validation summary
+        run: echo "RaceDay Part 1 repository validation passed."
+
