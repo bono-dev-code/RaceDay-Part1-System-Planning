@@ -68,3 +68,28 @@ CREATE TABLE dbo.[User]
             REFERENCES dbo.[Role] (RoleID)
 );
 GO
+
+ -- 3. EVENT
+      
+CREATE TABLE dbo.[Event]
+    (
+        EventID INT IDENTITY(1,1) NOT NULL,
+        OrganiserID INT NOT NULL,
+        EventName VARCHAR(100) NOT NULL,
+        Description VARCHAR(1000) NOT NULL,
+        EventDate DATETIME2 NOT NULL,
+        Location VARCHAR(150) NOT NULL,
+        Distance DECIMAL(6,2) NOT NULL,
+        EventType VARCHAR(10) NOT NULL,
+        BannerImageUrl VARCHAR(500) NULL,
+        CreatedAt DATETIME2 NOT NULL
+            CONSTRAINT DF_Event_CreatedAt DEFAULT SYSDATETIME(),
+
+        CONSTRAINT PK_Event PRIMARY KEY (EventID),
+        CONSTRAINT FK_Event_Organiser FOREIGN KEY (OrganiserID)
+            REFERENCES dbo.[User] (UserID),
+        CONSTRAINT CK_Event_Distance CHECK (Distance > 0),
+        CONSTRAINT CK_Event_EventType
+            CHECK (EventType IN ('Run', 'Walk', 'Cycle'))
+);
+GO
