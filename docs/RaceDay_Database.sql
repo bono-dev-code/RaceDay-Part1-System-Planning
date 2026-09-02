@@ -13,3 +13,19 @@ BEGIN
     CREATE DATABASE RaceDayDB;
 END;
 GO
+
+USE RaceDayDB;
+GO
+
+SET NOCOUNT ON;
+SET XACT_ABORT ON;
+GO
+
+-- Tables are dropped in reverse dependency order so the script can be rerun.
+DROP TABLE IF EXISTS dbo.[Result];
+DROP TABLE IF EXISTS dbo.Enrolment;
+DROP TABLE IF EXISTS dbo.Category;
+DROP TABLE IF EXISTS dbo.[Event];
+DROP TABLE IF EXISTS dbo.[User];
+DROP TABLE IF EXISTS dbo.[Role];
+GO
