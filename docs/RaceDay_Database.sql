@@ -159,3 +159,38 @@ CREATE TABLE dbo.[Result]
         CONSTRAINT CK_Result_FinishingPosition CHECK (FinishingPosition > 0)
 );
 GO
+
+      -- SEED DATA
+       
+
+INSERT INTO dbo.[Role] (RoleName)
+    VALUES
+        ('Organiser'),
+        ('Participant');
+GO
+
+    -- Two Organisers and two Participants.
+INSERT INTO dbo.[User]
+        (RoleID, FirstName, LastName, Email, PasswordHash,
+         PhoneNumber, DateOfBirth, ProfilePictureUrl)
+    VALUES
+        ((SELECT RoleID FROM dbo.[Role] WHERE RoleName = 'Organiser'),
+         'Nenguda', 'Bono', 'nenguda.bono@raceday.co.za',
+         CONVERT(VARCHAR(64), HASHBYTES('SHA2_256', 'Nenguda@2026'), 2),
+         '0825550142', '1988-04-12', NULL),
+
+        ((SELECT RoleID FROM dbo.[Role] WHERE RoleName = 'Organiser'),
+         'Sikhwetha', 'Brenda', 'sikhwetha.brenda@raceday.co.za',
+         CONVERT(VARCHAR(64), HASHBYTES('SHA2_256', 'Sikhwetha@2026'), 2),
+         '0835550198', '1985-09-27', NULL),
+
+        ((SELECT RoleID FROM dbo.[Role] WHERE RoleName = 'Participant'),
+         'Mbuyelo', 'Nkuna', 'mbuyelo.nkuna@example.co.za',
+         CONVERT(VARCHAR(64), HASHBYTES('SHA2_256', 'Mbuyelo@2026'), 2),
+         '0715550123', '1999-06-18', NULL),
+
+        ((SELECT RoleID FROM dbo.[Role] WHERE RoleName = 'Participant'),
+         'Mafalo', 'Joy', 'mafalo.joy@example.co.za',
+         CONVERT(VARCHAR(64), HASHBYTES('SHA2_256', 'Mafalo@2026'), 2),
+         '0765550174', '1992-11-03', NULL);
+GO
