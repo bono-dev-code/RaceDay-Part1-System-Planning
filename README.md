@@ -39,3 +39,16 @@ The RaceDay database contains six related entities:
 6. `Result` stores the finish time and finishing position for an enrolment.
 
 `Enrolment` resolves the many-to-many relationship between Participants and Events. A unique constraint prevents a Participant from enrolling in the same Event more than once. A Result is linked to one Enrolment, and its foreign key is unique so that an enrolment cannot receive more than one final result.
+
+## API endpoint plan
+
+The endpoint plan covers the following areas:
+
+- Authentication: registration and login
+- User profile management
+- Event management
+- Category management
+- Event enrolments
+- Results and participant race history
+
+Every planned endpoint specifies its HTTP method, route, purpose, required role, request body and expected success or failure responses.
