@@ -97,3 +97,9 @@ The GitHub Actions workflow runs on every push and pull request. It confirms tha
 - Both submitted documents are valid PDF files.
 - The SQL script contains the six required `CREATE TABLE` statements.
 - The SQL script includes primary keys, foreign keys, unique constraints, default constraints and seed-data statements.
+
+### Successful workflow
+
+The GitHub Actions workflow successfully validates the Part 1 repository structure, required documents and SQL database script.
+
+![Successful CI workflow](docs/ci-success.png)
