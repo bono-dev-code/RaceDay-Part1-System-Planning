@@ -194,3 +194,64 @@ INSERT INTO dbo.[User]
          CONVERT(VARCHAR(64), HASHBYTES('SHA2_256', 'Mafalo@2026'), 2),
          '0765550174', '1992-11-03', NULL);
 GO
+
+    -- Three South African RaceDay events.
+INSERT INTO dbo.[Event]
+        (OrganiserID, EventName, Description, EventDate, Location,
+         Distance, EventType, BannerImageUrl)
+    VALUES
+        ((SELECT UserID FROM dbo.[User] WHERE Email = 'nenguda.bono@raceday.co.za'),
+         'Venda Sunrise Heritage Run',
+         'A sunrise road race celebrating Venda heritage, community and fitness.',
+         '2026-08-23T06:30:00', 'Thohoyandou Stadium, Limpopo',
+         21.10, 'Run', NULL),
+
+        ((SELECT UserID FROM dbo.[User] WHERE Email = 'sikhwetha.brenda@raceday.co.za'),
+         'FNB Ubuntu Wellness Walk',
+         'A family wellness walk promoting healthy and active communities.',
+         '2026-10-17T07:00:00', 'FNB Stadium, Johannesburg',
+         10.00, 'Walk', NULL),
+
+        ((SELECT UserID FROM dbo.[User] WHERE Email = 'nenguda.bono@raceday.co.za'),
+         'Cape Town Coastal Cycle Challenge',
+         'A scenic cycling challenge for recreational and experienced cyclists.',
+         '2026-12-05T07:30:00', 'Cape Town Stadium, Western Cape',
+         80.00, 'Cycle', NULL);
+GO
+
+    -- Every event receives age and/or distance categories.
+INSERT INTO dbo.Category
+        (EventID, CategoryName, CategoryType, Description)
+    VALUES
+        ((SELECT EventID FROM dbo.[Event]
+          WHERE EventName = 'Venda Sunrise Heritage Run'),
+         '10km', 'Distance', 'Ten-kilometre road-running category.'),
+
+        ((SELECT EventID FROM dbo.[Event]
+          WHERE EventName = 'Venda Sunrise Heritage Run'),
+         '21.1km', 'Distance', 'Half-marathon distance category.'),
+
+        ((SELECT EventID FROM dbo.[Event]
+          WHERE EventName = 'Venda Sunrise Heritage Run'),
+         'Under 20', 'Age', 'Participants younger than twenty years.'),
+
+        ((SELECT EventID FROM dbo.[Event]
+          WHERE EventName = 'FNB Ubuntu Wellness Walk'),
+         '5km', 'Distance', 'Five-kilometre family walking category.'),
+
+        ((SELECT EventID FROM dbo.[Event]
+          WHERE EventName = 'FNB Ubuntu Wellness Walk'),
+         '10km', 'Distance', 'Ten-kilometre wellness walking category.'),
+
+        ((SELECT EventID FROM dbo.[Event]
+          WHERE EventName = 'Cape Town Coastal Cycle Challenge'),
+         '40km', 'Distance', 'Recreational forty-kilometre cycling category.'),
+
+        ((SELECT EventID FROM dbo.[Event]
+          WHERE EventName = 'Cape Town Coastal Cycle Challenge'),
+         '80km', 'Distance', 'Full eighty-kilometre cycling category.'),
+
+        ((SELECT EventID FROM dbo.[Event]
+          WHERE EventName = 'Cape Town Coastal Cycle Challenge'),
+         'Senior', 'Age', 'Age category for senior participants.');
+GO
