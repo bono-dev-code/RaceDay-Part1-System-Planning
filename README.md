@@ -71,3 +71,29 @@ Every planned endpoint specifies its HTTP method, route, purpose, required role,
 7. Check the final two result grids to confirm the seeded record counts and enrolment details.
 
 The script creates the database when it does not exist, creates all tables and constraints, inserts realistic sample data, and finishes with verification queries.
+
+## Repository structure
+
+```text
+RaceDay-PROG6212-Part1/
+├── .github/
+│   └── workflows/
+│       └── validate-part1.yml
+├── docs/
+│   ├── RaceDay_API_Endpoint_Plan.pdf
+│   ├── RaceDay_Database.sql
+│   └── RaceDay_Part1_ERD.pdf
+├── .gitignore
+└── README.md
+```
+
+## Continuous integration
+
+The GitHub Actions workflow runs on every push and pull request. It confirms that:
+
+- `README.md` exists.
+- The `/docs` folder exists.
+- All three required Part 1 deliverables exist and are not empty.
+- Both submitted documents are valid PDF files.
+- The SQL script contains the six required `CREATE TABLE` statements.
+- The SQL script includes primary keys, foreign keys, unique constraints, default constraints and seed-data statements.
