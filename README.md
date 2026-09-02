@@ -4,7 +4,8 @@ RaceDay is a planned South African event-management system for road-running, wal
 
 ## Student details
 
-- Name: Bono Nenguda ST10484954
+- Name: Bono Nenguda
+- Student Number: ST10484954
 - Module: Programming 2B
 - Module code: PROG6212
 - Assessment: POE Part 1
