@@ -52,3 +52,22 @@ The endpoint plan covers the following areas:
 - Results and participant race history
 
 Every planned endpoint specifies its HTTP method, route, purpose, required role, request body and expected success or failure responses.
+
+## SQL Server setup
+
+### Requirements
+
+- Microsoft SQL Server
+- SQL Server Management Studio (SSMS)
+
+### Running the database script
+
+1. Open SQL Server Management Studio.
+2. Connect to a SQL Server instance.
+3. Open `docs/RaceDay_Database.sql`.
+4. Execute the script from the top, or run each section from one `GO` separator to the next.
+5. Refresh the Databases folder in Object Explorer.
+6. Confirm that `RaceDayDB` and its six tables were created.
+7. Check the final two result grids to confirm the seeded record counts and enrolment details.
+
+The script creates the database when it does not exist, creates all tables and constraints, inserts realistic sample data, and finishes with verification queries.
