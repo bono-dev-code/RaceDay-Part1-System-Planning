@@ -255,3 +255,65 @@ INSERT INTO dbo.Category
           WHERE EventName = 'Cape Town Coastal Cycle Challenge'),
          'Senior', 'Age', 'Age category for senior participants.');
 GO
+
+    -- Sample enrolments connect Participants, Events and Categories.
+INSERT INTO dbo.Enrolment
+        (ParticipantID, EventID, CategoryID, EnrolmentDate, EnrolmentStatus)
+    VALUES
+        ((SELECT UserID FROM dbo.[User] WHERE Email = 'mbuyelo.nkuna@example.co.za'),
+         (SELECT EventID FROM dbo.[Event]
+          WHERE EventName = 'Venda Sunrise Heritage Run'),
+         (SELECT CategoryID FROM dbo.Category
+          WHERE EventID = (SELECT EventID FROM dbo.[Event]
+                           WHERE EventName = 'Venda Sunrise Heritage Run')
+            AND CategoryName = '10km'),
+         '2026-07-10T10:15:00', 'Confirmed'),
+
+        ((SELECT UserID FROM dbo.[User] WHERE Email = 'mafalo.joy@example.co.za'),
+         (SELECT EventID FROM dbo.[Event]
+          WHERE EventName = 'Venda Sunrise Heritage Run'),
+         (SELECT CategoryID FROM dbo.Category
+          WHERE EventID = (SELECT EventID FROM dbo.[Event]
+                           WHERE EventName = 'Venda Sunrise Heritage Run')
+            AND CategoryName = '21.1km'),
+         '2026-07-12T14:20:00', 'Confirmed'),
+
+        ((SELECT UserID FROM dbo.[User] WHERE Email = 'mbuyelo.nkuna@example.co.za'),
+         (SELECT EventID FROM dbo.[Event]
+          WHERE EventName = 'FNB Ubuntu Wellness Walk'),
+         (SELECT CategoryID FROM dbo.Category
+          WHERE EventID = (SELECT EventID FROM dbo.[Event]
+                           WHERE EventName = 'FNB Ubuntu Wellness Walk')
+            AND CategoryName = '5km'),
+         '2026-08-25T09:05:00', 'Pending'),
+
+        ((SELECT UserID FROM dbo.[User] WHERE Email = 'mafalo.joy@example.co.za'),
+         (SELECT EventID FROM dbo.[Event]
+          WHERE EventName = 'Cape Town Coastal Cycle Challenge'),
+         (SELECT CategoryID FROM dbo.Category
+          WHERE EventID = (SELECT EventID FROM dbo.[Event]
+                           WHERE EventName = 'Cape Town Coastal Cycle Challenge')
+            AND CategoryName = '80km'),
+         '2026-08-29T16:45:00', 'Confirmed');
+GO
+
+    -- Results are linked to completed enrolments only once.
+INSERT INTO dbo.[Result]
+        (EnrolmentID, FinishTime, FinishingPosition, PublishedAt)
+    VALUES
+        ((SELECT en.EnrolmentID
+          FROM dbo.Enrolment AS en
+          INNER JOIN dbo.[User] AS u ON u.UserID = en.ParticipantID
+          INNER JOIN dbo.[Event] AS ev ON ev.EventID = en.EventID
+          WHERE u.Email = 'mbuyelo.nkuna@example.co.za'
+            AND ev.EventName = 'Venda Sunrise Heritage Run'),
+         '00:54:18', 1, '2026-08-23T11:30:00'),
+
+        ((SELECT en.EnrolmentID
+          FROM dbo.Enrolment AS en
+          INNER JOIN dbo.[User] AS u ON u.UserID = en.ParticipantID
+          INNER JOIN dbo.[Event] AS ev ON ev.EventID = en.EventID
+          WHERE u.Email = 'mafalo.joy@example.co.za'
+            AND ev.EventName = 'Venda Sunrise Heritage Run'),
+         '01:42:37', 2, '2026-08-23T11:30:00');
+GO
