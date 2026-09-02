@@ -111,3 +111,51 @@ CREATE TABLE dbo.Category
             CHECK (CategoryType IN ('Age', 'Distance'))
 );
 GO
+
+      -- 5. ENROLMENT
+      
+CREATE TABLE dbo.Enrolment
+    (
+        EnrolmentID INT IDENTITY(1,1) NOT NULL,
+        ParticipantID INT NOT NULL,
+        EventID INT NOT NULL,
+        CategoryID INT NOT NULL,
+        EnrolmentDate DATETIME2 NOT NULL
+            CONSTRAINT DF_Enrolment_EnrolmentDate DEFAULT SYSDATETIME(),
+        EnrolmentStatus VARCHAR(20) NOT NULL
+            CONSTRAINT DF_Enrolment_EnrolmentStatus DEFAULT 'Pending',
+
+        CONSTRAINT PK_Enrolment PRIMARY KEY (EnrolmentID),
+        CONSTRAINT FK_Enrolment_Participant FOREIGN KEY (ParticipantID)
+            REFERENCES dbo.[User] (UserID),
+        CONSTRAINT FK_Enrolment_Event FOREIGN KEY (EventID)
+            REFERENCES dbo.[Event] (EventID),
+        CONSTRAINT FK_Enrolment_Category FOREIGN KEY (CategoryID)
+            REFERENCES dbo.Category (CategoryID),
+        CONSTRAINT UQ_Enrolment_Participant_Event
+            UNIQUE (ParticipantID, EventID),
+        CONSTRAINT CK_Enrolment_Status
+            CHECK (EnrolmentStatus IN ('Pending', 'Confirmed', 'Cancelled'))
+);
+GO
+
+    
+      -- 6. RESULT
+      
+CREATE TABLE dbo.[Result]
+    (
+        ResultID INT IDENTITY(1,1) NOT NULL,
+        EnrolmentID INT NOT NULL,
+        FinishTime TIME NOT NULL,
+        FinishingPosition INT NOT NULL,
+        PublishedAt DATETIME2 NOT NULL
+            CONSTRAINT DF_Result_PublishedAt DEFAULT SYSDATETIME(),
+
+        CONSTRAINT PK_Result PRIMARY KEY (ResultID),
+        CONSTRAINT UQ_Result_EnrolmentID UNIQUE (EnrolmentID),
+        CONSTRAINT FK_Result_Enrolment FOREIGN KEY (EnrolmentID)
+            REFERENCES dbo.Enrolment (EnrolmentID),
+        CONSTRAINT CK_Result_FinishTime CHECK (FinishTime > '00:00:00'),
+        CONSTRAINT CK_Result_FinishingPosition CHECK (FinishingPosition > 0)
+);
+GO
