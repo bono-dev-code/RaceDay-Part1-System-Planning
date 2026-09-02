@@ -103,3 +103,9 @@ The GitHub Actions workflow runs on every push and pull request. It confirms tha
 The GitHub Actions workflow successfully validates the Part 1 repository structure, required documents and SQL database script.
 
 ![Successful CI workflow](docs/ci-success.png)
+
+## Video Presentation
+
+The Part 1 video presentation explains the RaceDay ERD design decisions, API endpoint plan, SQL Server database design, and the successful live execution of the complete database script in SQL Server Management Studio.
+
+[Watch the RaceDay Part 1 Video Presentation]()
