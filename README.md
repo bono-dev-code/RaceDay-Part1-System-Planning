@@ -108,4 +108,4 @@ The GitHub Actions workflow successfully validates the Part 1 repository structu
 
 The Part 1 video presentation explains the RaceDay ERD design decisions, API endpoint plan, SQL Server database design, and the successful live execution of the complete database script in SQL Server Management Studio.
 
-[Watch the RaceDay Part 1 Video Presentation]()
+[Watch the RaceDay Part 1 Video Presentation](https://youtu.be/tMmNPZpLblY)
