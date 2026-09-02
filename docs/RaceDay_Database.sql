@@ -317,3 +317,31 @@ INSERT INTO dbo.[Result]
             AND ev.EventName = 'Venda Sunrise Heritage Run'),
          '01:42:37', 2, '2026-08-23T11:30:00');
 GO
+
+-- Verification queries for the SSMS demonstration. 
+SELECT 'Role' AS TableName, COUNT(*) AS RecordCount FROM dbo.[Role]
+UNION ALL
+SELECT 'User', COUNT(*) FROM dbo.[User]
+UNION ALL
+SELECT 'Event', COUNT(*) FROM dbo.[Event]
+UNION ALL
+SELECT 'Category', COUNT(*) FROM dbo.Category
+UNION ALL
+SELECT 'Enrolment', COUNT(*) FROM dbo.Enrolment
+UNION ALL
+SELECT 'Result', COUNT(*) FROM dbo.[Result];
+
+SELECT
+    u.FirstName + ' ' + u.LastName AS Participant,
+    ev.EventName,
+    c.CategoryName,
+    en.EnrolmentStatus,
+    r.FinishTime,
+    r.FinishingPosition
+FROM dbo.Enrolment AS en
+INNER JOIN dbo.[User] AS u ON u.UserID = en.ParticipantID
+INNER JOIN dbo.[Event] AS ev ON ev.EventID = en.EventID
+INNER JOIN dbo.Category AS c ON c.CategoryID = en.CategoryID
+LEFT JOIN dbo.[Result] AS r ON r.EnrolmentID = en.EnrolmentID
+ORDER BY ev.EventDate, r.FinishingPosition;
+GO
