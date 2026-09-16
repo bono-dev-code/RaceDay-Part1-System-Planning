@@ -1,0 +1,27 @@
+@host = https://localhost:7175
+
+### Register a Participant
+POST {{host}}/api/auth/register
+Content-Type: application/json
+
+{
+  "firstName": "Mafalo",
+  "lastName": "Joy",
+  "email": "joy.mafalo@example.com",
+  "password": "StrongPass1!",
+  "phoneNumber": "0712345678",
+  "dateOfBirth": "1998-04-15",
+  "roleName": "Participant"
+}
+
+### Log in (the client must retain the session cookie)
+POST {{host}}/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "joy.mafalo@example.com",
+  "password": "StrongPass1!"
+}
+
+### Public events
+GET {{host}}/api/events
