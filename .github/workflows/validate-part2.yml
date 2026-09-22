@@ -2,32 +2,72 @@ name: Build and Test Part 2
 
 on:
   push:
-    branches: ["main", "master", "part2-api"]
+    branches:
+      - main
+      - master
+      - part2-api
+    paths:
+      - "Part2/**"
+      - "RaceDay.sln"
+      - "README.md"
+      - ".github/workflows/validate-part2.yml"
+
   pull_request:
-    branches: ["main", "master"]
+    branches:
+      - main
+      - master
+    paths:
+      - "Part2/**"
+      - "RaceDay.sln"
+      - "README.md"
+      - ".github/workflows/validate-part2.yml"
+
   workflow_dispatch:
+
+permissions:
+  contents: read
 
 jobs:
   build-and-test:
+    name: Build and test RaceDay API
     runs-on: ubuntu-latest
+    timeout-minutes: 10
+
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
+
       - name: Set up .NET 8
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: 8.0.x
-      - name: Restore dependencies
-        run: dotnet restore RaceDay.sln
-      - name: Build solution
-        run: dotnet build RaceDay.sln --configuration Release --no-restore
-      - name: Run unit and integration tests
-        run: dotnet test RaceDay.sln --configuration Release --no-build --verbosity normal --collect:"XPlat Code Coverage"
-      - name: Confirm Part 2 structure
+          dotnet-version: "8.0.x"
+
+      - name: Confirm Part 2 repository structure
         shell: bash
         run: |
-          test -f Part2/RaceDay.Api/Program.cs
-          test -f Part2/RaceDay.Api/Data/RaceDayDbContext.cs
-          test -d Part2/RaceDay.Api/Controllers
-          test -f Part2/RaceDay.Api.Tests/ApiIntegrationTests.cs
-          test -f README.md
+          test -f "Part2/RaceDay.Api/RaceDay.Api.csproj"
+          test -f "Part2/RaceDay.Api/Program.cs"
+          test -f "Part2/RaceDay.Api/Data/RaceDayDbContext.cs"
+          test -d "Part2/RaceDay.Api/Controllers"
+          test -f "Part2/RaceDay.Api.Tests/RaceDay.Api.Tests.csproj"
+          test -f "Part2/RaceDay.Api.Tests/ApiIntegrationTests.cs"
+          test -f "README.md"
+          echo "Part 2 repository structure is valid."
+
+      - name: Restore Part 2 dependencies
+        run: dotnet restore Part2/RaceDay.Api.Tests/RaceDay.Api.Tests.csproj
+
+      - name: Build Part 2 projects
+        run: >
+          dotnet build
+          Part2/RaceDay.Api.Tests/RaceDay.Api.Tests.csproj
+          --configuration Release
+          --no-restore
+
+      - name: Run Part 2 automated tests
+        run: >
+          dotnet test
+          Part2/RaceDay.Api.Tests/RaceDay.Api.Tests.csproj
+          --configuration Release
+          --no-build
+          --verbosity normal
