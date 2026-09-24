@@ -173,3 +173,15 @@ Registration accepts either `Organiser` or `Participant`. Passwords are hashed w
 
 - Organisers manage their own events and categories, view their event enrolments, update enrolment statuses and capture results.
 - Participants maintain their profile, enrol in events, view their enrolments and view their own result history.
+
+### Running the tests
+
+From the repository root, run:
+
+```powershell
+dotnet restore RaceDay.sln
+dotnet build RaceDay.sln
+dotnet test RaceDay.sln
+```
+
+The tests cover valid and duplicate registration, valid and invalid login, unauthenticated access, role rejection, Organiser event/category management, Participant enrolment, duplicate enrolment prevention, Swagger availability and session logout.
