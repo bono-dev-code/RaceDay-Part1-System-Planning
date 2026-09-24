@@ -185,3 +185,11 @@ dotnet test RaceDay.sln
 ```
 
 The tests cover valid and duplicate registration, valid and invalid login, unauthenticated access, role rejection, Organiser event/category management, Participant enrolment, duplicate enrolment prevention, Swagger availability and session logout.
+
+### Part 2 CI/CD
+
+The `validate-part2.yml` workflow restores dependencies, builds the full solution, runs all tests with code coverage and validates the required repository structure on every push and pull request.
+
+> successful Part 2 GitHub Actions screenshot 
+
+> unlisted Part 2 YouTube presentation link 
