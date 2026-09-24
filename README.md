@@ -166,3 +166,10 @@ Update-Database -Project RaceDay.Api -StartupProject RaceDay.Api
 9. Register and log in through Swagger. Swagger retains the server session cookie for subsequent requests.
 
 The Code-First migration creates `RaceDayDbPart2`, preserving the original `RaceDayDB` used for Part 1 evidence. Its six-table schema matches the approved Part 1 ERD and SQL script.
+
+### Authentication and roles
+
+Registration accepts either `Organiser` or `Participant`. Passwords are hashed with BCrypt. On successful login, the API stores `UserID` and `Role` in the server-side session. Protected endpoints return `401 Unauthorized` when no session exists and `403 Forbidden` when the authenticated role is not allowed.
+
+- Organisers manage their own events and categories, view their event enrolments, update enrolment statuses and capture results.
+- Participants maintain their profile, enrol in events, view their enrolments and view their own result history.
