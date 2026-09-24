@@ -120,3 +120,30 @@ This project was developed for educational and academic assessment purposes as p
 ## Part 2 - RESTful API
 
 Part 2 implements the approved endpoint plan as a controller-based ASP.NET Core Web API. It uses Entity Framework Core Code-First with SQL Server, server-side session authentication, BCrypt password hashing, Swagger/OpenAPI and xUnit integration tests.
+
+### Part 2 technology
+
+- ASP.NET Core Web API on .NET 8
+- Entity Framework Core 8 with SQL Server LocalDB
+- Server-side session authentication for Organiser and Participant roles
+- BCrypt password hashing
+- Swagger UI for browser-based endpoint testing
+- xUnit and `WebApplicationFactory` integration tests
+- GitHub Actions build, test and structure validation
+
+### Part 2 project structure
+
+```text
+Part2/
+├── RaceDay.Api/
+│   ├── Controllers/
+│   ├── Data/
+│   ├── Dtos/
+│   ├── Filters/
+│   ├── Migrations/
+│   ├── Models/
+│   └── Program.cs
+└── RaceDay.Api.Tests/
+    ├── ApiIntegrationTests.cs
+    └── CustomWebApplicationFactory.cs
+```
