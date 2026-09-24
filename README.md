@@ -147,3 +147,22 @@ Part2/
     ├── ApiIntegrationTests.cs
     └── CustomWebApplicationFactory.cs
 ```
+
+### Part 2 setup and run instructions
+
+1. Install Visual Studio 2022 with the **ASP.NET and web development** workload and .NET 8 SDK.
+2. Install SQL Server LocalDB and open `(localdb)\MSSQLLocalDB` in SQL Server Management Studio 22.
+3. Clone the repository and open `RaceDay.sln` in Visual Studio.
+4. Confirm the `RaceDayConnection` string in `Part2/RaceDay.Api/appsettings.json` points to `(localdb)\MSSQLLocalDB`.
+5. In Visual Studio, set `RaceDay.Api` as the startup project.
+6. Build the solution to restore NuGet packages.
+7. Open Package Manager Console and run:
+
+```powershell
+Update-Database -Project RaceDay.Api -StartupProject RaceDay.Api
+```
+
+8. Run the API. The browser opens Swagger at `https://localhost:7175/swagger`.
+9. Register and log in through Swagger. Swagger retains the server session cookie for subsequent requests.
+
+The Code-First migration creates `RaceDayDbPart2`, preserving the original `RaceDayDB` used for Part 1 evidence. Its six-table schema matches the approved Part 1 ERD and SQL script.
