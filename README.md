@@ -193,3 +193,9 @@ The `validate-part2.yml` workflow restores dependencies, builds the full solutio
 > successful Part 2 GitHub Actions screenshot 
 
 > unlisted Part 2 YouTube presentation link 
+
+## Conclusion
+
+RaceDay Part 1 provides the system-planning foundation for a South African running, walking and cycling event-management platform. The ERD, API endpoint plan and SQL Server database script were designed consistently to support users, events, categories, enrolments and results.
+
+This project was developed for educational and academic assessment purposes as part of the PROG6212 Portfolio of Evidence. It is not intended for commercial or production use.
