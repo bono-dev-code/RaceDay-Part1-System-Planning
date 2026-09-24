@@ -190,9 +190,9 @@ The tests cover valid and duplicate registration, valid and invalid login, unaut
 
 The `validate-part2.yml` workflow restores dependencies, builds the full solution, runs all tests with code coverage and validates the required repository structure on every push and pull request.
 
-> successful Part 2 GitHub Actions screenshot 
+> [Successful CI workflow](docs/ci-success.png)
 
-> unlisted Part 2 YouTube presentation link 
+> [Watch the RaceDay Part 2 Video Presentation](https://youtu.be/tMmNPZpLblY)
 
 ## Conclusion
 
