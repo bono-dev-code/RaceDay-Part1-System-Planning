@@ -430,7 +430,7 @@ The video demonstration should show:
 - All 14 automated tests passing
 - The successful Part 2 GitHub Actions run
 
-## Final conclusion
+## Part 2 conclusion
 
 RaceDay Part 1 established the system-planning and database foundation, while Part 2 transformed that design into a functional RESTful Web API. The completed solution demonstrates database integration, secure password storage, session authentication, role-based authorization, CRUD operations, Swagger documentation, automated integration testing and continuous integration.
 
