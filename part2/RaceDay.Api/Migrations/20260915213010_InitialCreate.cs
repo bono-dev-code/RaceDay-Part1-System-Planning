@@ -7,12 +7,13 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace RaceDay.Api.Migrations
 {
-    /// <inheritdoc />
+    // Create the initial database migration
     public partial class InitialCreate : Migration
     {
-        /// <inheritdoc />
+        // Create the database tables
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            // Create the Role table
             migrationBuilder.CreateTable(
                 name: "Role",
                 columns: table => new
@@ -27,6 +28,7 @@ namespace RaceDay.Api.Migrations
                     table.CheckConstraint("CK_Role_RoleName", "[RoleName] IN ('Organiser','Participant')");
                 });
 
+            // Create the User table
             migrationBuilder.CreateTable(
                 name: "User",
                 columns: table => new
@@ -54,6 +56,7 @@ namespace RaceDay.Api.Migrations
                         onDelete: ReferentialAction.Restrict);
                 });
 
+            // Create the Event table
             migrationBuilder.CreateTable(
                 name: "Event",
                 columns: table => new
@@ -83,6 +86,7 @@ namespace RaceDay.Api.Migrations
                         onDelete: ReferentialAction.Restrict);
                 });
 
+            // Create the Category table
             migrationBuilder.CreateTable(
                 name: "Category",
                 columns: table => new
@@ -106,6 +110,7 @@ namespace RaceDay.Api.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            // Create the Enrolment table
             migrationBuilder.CreateTable(
                 name: "Enrolment",
                 columns: table => new
@@ -142,6 +147,7 @@ namespace RaceDay.Api.Migrations
                         onDelete: ReferentialAction.Restrict);
                 });
 
+            // Create the Result table
             migrationBuilder.CreateTable(
                 name: "Result",
                 columns: table => new
@@ -166,6 +172,7 @@ namespace RaceDay.Api.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            // Add the default user roles
             migrationBuilder.InsertData(
                 table: "Role",
                 columns: new[] { "RoleID", "RoleName" },
@@ -175,6 +182,7 @@ namespace RaceDay.Api.Migrations
                     { 2, "Participant" }
                 });
 
+            // Create indexes for the database tables
             migrationBuilder.CreateIndex(
                 name: "IX_Category_EventID_CategoryName",
                 table: "Category",
@@ -226,7 +234,7 @@ namespace RaceDay.Api.Migrations
                 column: "RoleID");
         }
 
-        /// <inheritdoc />
+        // Remove the database tables if the migration is reversed
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
