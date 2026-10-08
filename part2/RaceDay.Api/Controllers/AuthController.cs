@@ -1,3 +1,4 @@
+
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using RaceDay.Api.Data;
@@ -13,12 +14,18 @@ public class AuthController(RaceDayDbContext db) : ControllerBase
     [HttpPost("register"), ProducesResponseType(201), ProducesResponseType(400), ProducesResponseType(409)]
     public async Task<IActionResult> Register(RegisterRequest request)
     {
+        // Check if the selected role is valid
         var roleName = request.RoleName.Trim();
         if (roleName is not ("Organiser" or "Participant")) return BadRequest(new { message = "Role must be Organiser or Participant." });
+
+        // Check if the email is already registered
         var email = request.Email.Trim().ToLowerInvariant();
         if (await db.Users.AnyAsync(x => x.Email == email)) return Conflict(new { message = "Email is already registered." });
+
         var role = await db.Roles.SingleOrDefaultAsync(x => x.RoleName == roleName);
         if (role is null) return Problem("Required roles have not been seeded.");
+
+        // Create a new user and save the details
         var user = new User { RoleID = role.RoleID, FirstName = request.FirstName.Trim(), LastName = request.LastName.Trim(), Email = email, PasswordHash = BCrypt.Net.BCrypt.HashPassword(request.Password), PhoneNumber = request.PhoneNumber?.Trim(), DateOfBirth = request.DateOfBirth };
         db.Users.Add(user); await db.SaveChangesAsync();
         return CreatedAtAction(nameof(UsersController.GetMe), "Users", null, new { user.UserID, user.FirstName, user.LastName, user.Email, role = role.RoleName });
@@ -28,9 +35,14 @@ public class AuthController(RaceDayDbContext db) : ControllerBase
     [HttpPost("login"), ProducesResponseType(200), ProducesResponseType(400), ProducesResponseType(401)]
     public async Task<IActionResult> Login(LoginRequest request)
     {
+        // Find the user using their email
         var email = request.Email.Trim().ToLowerInvariant();
         var user = await db.Users.Include(x => x.Role).SingleOrDefaultAsync(x => x.Email == email);
+
+        // Check if the email and password are correct
         if (user is null || !BCrypt.Net.BCrypt.Verify(request.Password, user.PasswordHash)) return Unauthorized(new { message = "Invalid email or password." });
+
+        // Save the user ID and role in the session
         HttpContext.Session.SetInt32("UserID", user.UserID); HttpContext.Session.SetString("Role", user.Role.RoleName);
         return Ok(new { message = "Login successful.", user = new { user.UserID, user.FirstName, user.LastName, user.Email, role = user.Role.RoleName } });
     }
