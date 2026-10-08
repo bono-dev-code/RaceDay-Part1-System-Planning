@@ -9,7 +9,7 @@ namespace RaceDay.Api.Controllers;
 [ApiController, Route("api/auth")]
 public class AuthController(RaceDayDbContext db) : ControllerBase
 {
-    /// <summary>Registers a new Organiser or Participant account.</summary>
+    /// Registers a new Organiser or Participant account.
     [HttpPost("register"), ProducesResponseType(201), ProducesResponseType(400), ProducesResponseType(409)]
     public async Task<IActionResult> Register(RegisterRequest request)
     {
@@ -24,7 +24,7 @@ public class AuthController(RaceDayDbContext db) : ControllerBase
         return CreatedAtAction(nameof(UsersController.GetMe), "Users", null, new { user.UserID, user.FirstName, user.LastName, user.Email, role = role.RoleName });
     }
 
-    /// <summary>Logs in and creates a server-side session containing the user ID and role.</summary>
+    /// Logs in and creates a server-side session containing the user ID and role.
     [HttpPost("login"), ProducesResponseType(200), ProducesResponseType(400), ProducesResponseType(401)]
     public async Task<IActionResult> Login(LoginRequest request)
     {
@@ -35,7 +35,7 @@ public class AuthController(RaceDayDbContext db) : ControllerBase
         return Ok(new { message = "Login successful.", user = new { user.UserID, user.FirstName, user.LastName, user.Email, role = user.Role.RoleName } });
     }
 
-    /// <summary>Clears the current authenticated session.</summary>
+    /// Clears the current authenticated session.
     [HttpPost("logout"), ProducesResponseType(204)]
     public IActionResult Logout() { HttpContext.Session.Clear(); return NoContent(); }
 }
