@@ -22,7 +22,10 @@ public class CategoriesController(RaceDayDbContext db) : ControllerBase
     [HttpPost("events/{eventId:int}/categories"), SessionAuthorize("Organiser"), ProducesResponseType(201), ProducesResponseType(400), ProducesResponseType(401), ProducesResponseType(403), ProducesResponseType(404), ProducesResponseType(409)]
     public async Task<IActionResult> Create(int eventId, CategoryRequest request)
     {
+        // Check the event, organiser and category details
         var ev=await db.Events.FindAsync(eventId); if(ev is null)return NotFound(new{message="Event not found."}); if(ev.OrganiserID!=UserId())return StatusCode(403,new{message="You do not own this event."}); if(!ValidType(request.CategoryType))return BadRequest(new{message="CategoryType must be Age or Distance."}); if(await db.Categories.AnyAsync(x=>x.EventID==eventId&&x.CategoryName==request.CategoryName.Trim()))return Conflict(new{message="Category name already exists for this event."});
+
+        // Add the new category and save it
         var c=new Category{EventID=eventId,CategoryName=request.CategoryName.Trim(),CategoryType=request.CategoryType,Description=request.Description?.Trim()}; db.Categories.Add(c); await db.SaveChangesAsync(); return CreatedAtAction(nameof(GetById),new{categoryId=c.CategoryID},new{c.CategoryID,c.EventID,c.CategoryName,c.CategoryType,c.Description});
     }
 
@@ -30,6 +33,7 @@ public class CategoriesController(RaceDayDbContext db) : ControllerBase
     [HttpPut("categories/{categoryId:int}"), SessionAuthorize("Organiser"), ProducesResponseType(200), ProducesResponseType(400), ProducesResponseType(401), ProducesResponseType(403), ProducesResponseType(404), ProducesResponseType(409)]
     public async Task<IActionResult> Update(int categoryId, CategoryRequest request)
     {
+        // Check the category before updating its details
         var c=await db.Categories.Include(x=>x.Event).SingleOrDefaultAsync(x=>x.CategoryID==categoryId); if(c is null)return NotFound(new{message="Category not found."}); if(c.Event.OrganiserID!=UserId())return StatusCode(403,new{message="You do not own this event."}); if(!ValidType(request.CategoryType))return BadRequest(new{message="CategoryType must be Age or Distance."}); if(await db.Categories.AnyAsync(x=>x.EventID==c.EventID&&x.CategoryID!=categoryId&&x.CategoryName==request.CategoryName.Trim()))return Conflict(new{message="Category name already exists for this event."}); c.CategoryName=request.CategoryName.Trim();c.CategoryType=request.CategoryType;c.Description=request.Description?.Trim();await db.SaveChangesAsync();return Ok(new{c.CategoryID,c.EventID,c.CategoryName,c.CategoryType,c.Description});
     }
 
@@ -37,8 +41,13 @@ public class CategoriesController(RaceDayDbContext db) : ControllerBase
     [HttpDelete("categories/{categoryId:int}"), SessionAuthorize("Organiser"), ProducesResponseType(204), ProducesResponseType(401), ProducesResponseType(403), ProducesResponseType(404), ProducesResponseType(409)]
     public async Task<IActionResult> Delete(int categoryId)
     {
+        // Check if the category can be deleted
         var c=await db.Categories.Include(x=>x.Event).SingleOrDefaultAsync(x=>x.CategoryID==categoryId);if(c is null)return NotFound(new{message="Category not found."});if(c.Event.OrganiserID!=UserId())return StatusCode(403,new{message="You do not own this event."});if(await db.Enrolments.AnyAsync(x=>x.CategoryID==categoryId))return Conflict(new{message="Category is used by enrolments."});db.Categories.Remove(c);await db.SaveChangesAsync();return NoContent();
     }
+
+    // Get the logged-in user's ID
     private int UserId()=>HttpContext.Session.GetInt32("UserID")!.Value;
+
+    // Check if the category type is valid
     private static bool ValidType(string value)=>value is "Age" or "Distance";
 }
