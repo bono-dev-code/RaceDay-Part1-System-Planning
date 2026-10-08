@@ -2,6 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace RaceDay.Api.Models;
 
+// Store the user details
 public class User
 {
     public int UserID { get; set; }
@@ -14,7 +15,11 @@ public class User
     public DateOnly? DateOfBirth { get; set; }
     [StringLength(500)] public string? ProfilePictureUrl { get; set; }
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+
+    // Link the user to their role
     public Role Role { get; set; } = null!;
+
+    // Store the user's organised events and enrolments
     public ICollection<Event> OrganisedEvents { get; set; } = new List<Event>();
     public ICollection<Enrolment> Enrolments { get; set; } = new List<Enrolment>();
 }
