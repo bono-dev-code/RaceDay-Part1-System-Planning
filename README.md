@@ -430,6 +430,12 @@ The video demonstration should show:
 - All 14 automated tests passing
 - The successful Part 2 GitHub Actions run
 
+### AI Usage Disclosure
+
+I used GitHub Copilot to assist with C# code suggestions, debugging, and understanding programming concepts during the development of my RaceDay.Api project.
+
+I also used Cursor to help explain programming concepts, review code, and understand errors.
+
 ## Part 2 conclusion
 
 RaceDay Part 1 established the system-planning and database foundation, while Part 2 transformed that design into a functional RESTful Web API. The completed solution demonstrates database integration, secure password storage, session authentication, role-based authorization, CRUD operations, Swagger documentation, automated integration testing and continuous integration.
