@@ -1,7 +1,9 @@
+
 using System.ComponentModel.DataAnnotations;
 
 namespace RaceDay.Api.Models;
 
+// Store the event details
 public class Event
 {
     public int EventID { get; set; }
@@ -14,7 +16,11 @@ public class Event
     [Required, StringLength(10)] public string EventType { get; set; } = string.Empty;
     [StringLength(500)] public string? BannerImageUrl { get; set; }
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+
+    // Link the event to its organiser
     public User Organiser { get; set; } = null!;
+
+    // Store the categories and enrolments for this event
     public ICollection<Category> Categories { get; set; } = new List<Category>();
     public ICollection<Enrolment> Enrolments { get; set; } = new List<Enrolment>();
 }
