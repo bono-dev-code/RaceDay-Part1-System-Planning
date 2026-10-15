@@ -414,21 +414,8 @@ The `.github/workflows/validate-part2.yml` GitHub Actions workflow runs for rele
 
 ## Part 2 video demonstration
 
-Add the unlisted YouTube video link before the final submission:
+[Watch the RaceDay Part 2 Video Demonstration](YOUTUBE)
 
-[Watch the RaceDay Part 2 Video Demonstration](PASTE-PART-2-YOUTUBE-LINK-HERE)
-
-The video demonstration should show:
-
-- The GitHub repository and Part 2 project structure
-- The SQL Server database and six tables
-- Swagger and the documented endpoints
-- Registration, login and session authentication
-- Organiser and Participant role permissions
-- A `403 Forbidden` role-restriction example
-- The complete event, category, enrolment and result workflow
-- All 14 automated tests passing
-- The successful Part 2 GitHub Actions run
 
 ### AI Usage Disclosure
 
