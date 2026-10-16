@@ -414,7 +414,7 @@ The `.github/workflows/validate-part2.yml` GitHub Actions workflow runs for rele
 
 ## Part 2 video demonstration
 
-[Watch the RaceDay Part 2 Video Demonstration](YOUTUBE)
+[Watch the RaceDay Part 2 Video Demonstration](https://youtu.be/HbkS_IkiuEw?si=1uiPyBbJ2LtLoAnV)
 
 
 ### AI Usage Disclosure
