@@ -2,11 +2,13 @@ using System.Reflection;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using RaceDay.Api.Data;
+using RaceDay.Api.Services;
 
 // Create and set up the application
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 builder.Services.AddDbContext<RaceDayDbContext>(o => o.UseSqlServer(builder.Configuration.GetConnectionString("RaceDayConnection")));
+builder.Services.AddScoped<IBlobStorageService, AzureBlobStorageService>();
 
 // Set up session storage
 builder.Services.AddDistributedMemoryCache();
@@ -31,7 +33,10 @@ if (!app.Environment.IsEnvironment("Testing"))
 }
 
 // Set up the application and start running
-app.UseHttpsRedirection();
+if (!app.Environment.IsDevelopment())
+{
+    app.UseHttpsRedirection();
+}
 app.UseSession();
 app.UseSwagger();
 app.UseSwaggerUI();
