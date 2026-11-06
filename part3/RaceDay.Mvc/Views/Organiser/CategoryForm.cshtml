@@ -1,0 +1,55 @@
+@model CategoryFormModel
+@{
+    var editing = Model.CategoryID > 0;
+    ViewData["Title"] = editing ? "Edit category" : "Add category";
+}
+<section class="container section-space narrow-page">
+    <span class="eyebrow text-orange">
+        Event setup
+    </span>
+    <h1>
+        @(editing ? "Edit category" : "Add a category")
+    </h1>
+    <form method="post" class="form-card mt-4">
+        <input asp-for="CategoryID" type="hidden"/>
+        <input asp-for="EventID" type="hidden"/>
+        <div asp-validation-summary="ModelOnly" class="text-danger mb-3">
+        </div>
+        <div class="mb-3">
+            <label asp-for="CategoryName" class="form-label">
+                Category name
+            </label>
+            <input asp-for="CategoryName" class="form-control"/>
+            <span asp-validation-for="CategoryName" class="text-danger">
+            </span>
+        </div>
+        <div class="mb-3">
+            <label asp-for="CategoryType" class="form-label">
+                Category type
+            </label>
+            <select asp-for="CategoryType" class="form-select">
+                <option>
+                    Age
+                </option>
+                <option>
+                    Distance
+                </option>
+            </select>
+        </div>
+        <div class="mb-3">
+            <label asp-for="Description" class="form-label">
+            </label>
+            <textarea asp-for="Description" class="form-control" rows="3">
+            </textarea>
+        </div>
+        <button class="btn btn-race">
+            Save category
+        </button>
+        <a asp-action="Categories" asp-route-eventId="@Model.EventID" class="btn btn-outline-dark">
+            Cancel
+        </a>
+    </form>
+</section>
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
