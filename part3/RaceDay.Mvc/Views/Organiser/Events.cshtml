@@ -1,0 +1,83 @@
+@model List<EventSummary>
+@{
+    ViewData["Title"] = "Manage events";
+}
+    <section class="container section-space">
+        <div class="section-heading">
+            <div>
+                <span class="eyebrow text-orange">
+                    Organiser tools
+                </span>
+                <h1>
+                    My events
+                </h1>
+            </div>
+            <a asp-action="CreateEvent" class="btn btn-race">
+                + Create event
+            </a>
+        </div>
+        @if(Model.Count == 0){
+            <div class="empty-state">
+                <div class="empty-icon">
+                    🏁
+                </div>
+                <h2>
+                    Create your first event
+                </h2>
+                <p>
+                    Build the event, add categories and welcome participants.
+                </p>
+            </div>
+        }
+    else{
+        <div class="row g-4">
+            @foreach(var item in Model){
+                <div class="col-lg-6">
+                    <article class="manage-card">
+                        <div class="manage-thumb"
+                             style="@(item.BannerImageUrl is null ? "" : $"background-image:url('{item.BannerImageUrl}')")">
+                            <span>
+                                @item.EventType
+                            </span>
+                        </div>
+                        <div class="manage-body">
+                            <div>
+                                <span class="detail-label">
+                                    @item.EventDate.ToString("dd MMM yyyy · HH:mm")
+                                </span>
+                                <h2>
+                                    @item.EventName
+                                </h2>
+                                <p>
+                                    📍 @item.Location · @item.Distance km
+                                </p>
+                            </div>
+                            <div class="action-grid">
+                                <a asp-action="EditEvent" asp-route-id="@item.EventID" class="btn btn-sm btn-outline-dark">
+                                    Edit
+                                </a>
+                                <a asp-action="Categories" asp-route-eventId="@item.EventID" class="btn btn-sm btn-outline-dark">
+                                    Categories
+                                </a>
+                                <a asp-action="Enrolments" asp-route-eventId="@item.EventID" class="btn btn-sm btn-outline-dark">
+                                    Participants
+                                </a>
+                                <a asp-action="Results" asp-route-eventId="@item.EventID" class="btn btn-sm btn-outline-dark">
+                                    Results
+                                </a>
+                                <form asp-action="DeleteEvent"
+                                      asp-route-id="@item.EventID"
+                                      method="post"
+                                      data-confirm="Delete this event? This only works when it has no enrolments.">
+                                    <button class="btn btn-sm btn-outline-danger w-100">
+                                        Delete
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </article>
+                </div>
+            }
+        </div>
+    }
+</section>
