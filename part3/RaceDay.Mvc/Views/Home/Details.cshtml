@@ -1,0 +1,129 @@
+@model EventDetails
+@{
+    ViewData["Title"] = Model.EventName;
+    var role = Context.Session.GetString("Role");
+}
+<section class="event-hero"
+         style="@(Model.BannerImageUrl is null ? "" : $"background-image:linear-gradient(90deg,rgba(8,20,34,.94),rgba(8,20,34,.45)),url('{Model.BannerImageUrl}')")">
+    <div class="container">
+        <span class="event-type">
+            @Model.EventType
+        </span>
+        <h1>
+            @Model.EventName
+        </h1>
+        <p>
+            📍 @Model.Location &nbsp; • &nbsp; @Model.EventDate.ToString("dddd, dd MMMM yyyy 'at' HH:mm")
+        </p>
+    </div>
+</section>
+<section class="container section-space">
+    <div class="row g-5">
+        <div class="col-lg-8">
+            <span class="eyebrow text-orange">
+                Event overview
+            </span>
+            <h2>
+                About this event
+            </h2>
+            <p class="lead">
+                @Model.Description
+            </p>
+            <div class="stats-strip">
+                <div>
+                    <strong>
+                        @Model.Distance
+                    </strong>
+                    <span>
+                        Kilometres
+                    </span>
+                </div>
+                <div>
+                    <strong>
+                        @Model.EventType
+                    </strong>
+                    <span>
+                        Event type
+                    </span>
+                </div>
+                <div>
+                    <strong>
+                        @Model.Categories.Count
+                    </strong>
+                    <span>
+                        Categories
+                    </span>
+                </div>
+            </div>
+            <h2 class="mt-5">
+                Available categories
+            </h2>
+            <div class="row g-3">
+                @foreach (var category in Model.Categories)
+                {
+                    <div class="col-md-6">
+                        <div class="category-card">
+                            <span class="category-type">
+                                @category.CategoryType
+                            </span>
+                            <h3>
+                                @category.CategoryName
+                            </h3>
+                            <p>
+                                @category.Description
+                            </p>
+                            @if (role == "Participant")
+                            {
+                                <form asp-controller="Participant" asp-action="Enrol" method="post">
+                                    <input type="hidden" name="eventId" value="@Model.EventID"/>
+                                    <input type="hidden" name="categoryId" value="@category.CategoryID"/>
+                                    <button class="btn btn-race w-100">
+                                        Enter this category
+                                    </button>
+                                </form>
+                            }
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+        <aside class="col-lg-4">
+            <div class="side-card">
+                <h3>
+                    Race details
+                </h3>
+                <dl>
+                    <dt>
+                        Date
+                    </dt>
+                    <dd>
+                        @Model.EventDate.ToString("dd MMMM yyyy")
+                    </dd>
+                    <dt>
+                        Start time
+                    </dt>
+                    <dd>
+                        @Model.EventDate.ToString("HH:mm")
+                    </dd>
+                    <dt>
+                        Location
+                    </dt>
+                    <dd>
+                        @Model.Location
+                    </dd>
+                    <dt>
+                        Organiser
+                    </dt>
+                    <dd>
+                        @Model.Organiser.FirstName @Model.Organiser.LastName
+                    </dd>
+                </dl>
+                @if (role is null) {
+                    <a asp-controller="Account" asp-action="Login" class="btn btn-race w-100">
+                        Log in to enter
+                    </a>
+                }
+            </div>
+        </aside>
+    </div>
+</section>
