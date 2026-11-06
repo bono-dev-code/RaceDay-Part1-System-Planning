@@ -1,0 +1,139 @@
+@model EventSearchViewModel
+@{
+    ViewData["Title"] = "Find your next finish line";
+}
+<section class="hero">
+    <div class="container hero-content">
+        <span class="eyebrow">
+            South Africa's race community
+        </span>
+        <h1>
+            YOUR NEXT
+            <br/>
+            <span>
+                FINISH LINE
+            </span>
+            <br/>
+            STARTS HERE.
+        </h1>
+        <p>
+            Discover runs, walks and cycling events. Choose your category and secure your place.
+        </p>
+        <a href="#events" class="btn btn-race btn-lg">
+            Explore events
+        </a>
+    </div>
+</section>
+<section class="container section-space" id="events">
+    <div class="section-heading">
+        <div>
+            <span class="eyebrow text-orange">
+                Ready, set, go
+            </span>
+            <h2>
+                Upcoming events
+            </h2>
+        </div>
+        <span class="count-chip">
+            @Model.Events.Count event@(Model.Events.Count == 1 ? "" : "s")
+        </span>
+    </div>
+    <form method="get" class="filter-card row g-3 align-items-end">
+        <div class="col-md-3">
+            <label class="form-label">
+                Event type
+            </label>
+            <select asp-for="Type" class="form-select">
+                <option value="">
+                    All types
+                </option>
+                <option>
+                    Run
+                </option>
+                <option>
+                    Walk
+                </option>
+                <option>
+                    Cycle
+                </option>
+            </select>
+        </div>
+        <div class="col-md-3">
+            <label class="form-label">
+                Date
+            </label>
+            <input asp-for="Date" type="date" class="form-control" />
+        </div>
+        <div class="col-md-4">
+            <label class="form-label">
+                Location
+            </label>
+            <input asp-for="Location" class="form-control" placeholder="e.g. Polokwane" />
+        </div>
+        <div class="col-md-2 d-grid">
+            <button class="btn btn-dark">
+                Apply filters
+            </button>
+        </div>
+    </form>
+    @if (Model.Events.Count == 0)
+    {
+        <div class="empty-state">
+            <div class="empty-icon">
+                🏁
+            </div>
+            <h3>
+                No events found
+            </h3>
+            <p>
+                Try changing your filters or check again soon.
+            </p>
+        </div>
+    }
+else
+{
+    <div class="row g-4 mt-2">
+        @foreach (var item in Model.Events)
+        {
+            <div class="col-md-6 col-xl-4">
+                <article class="event-card h-100">
+                    <div class="event-image" style="@(item.BannerImageUrl is null ? "" : $"background-image:url('{item.BannerImageUrl}')")">
+                        <span class="event-type">
+                            @item.EventType
+                        </span>
+                        @if (item.BannerImageUrl is null) {
+                            <span class="event-placeholder">
+                                RD
+                            </span>
+                        }
+                    </div>
+                    <div class="event-body">
+                        <div class="event-date">
+                            <strong>
+                                @item.EventDate.ToString("dd")
+                            </strong>
+                            <span>
+                                @item.EventDate.ToString("MMM yyyy")
+                            </span>
+                        </div>
+                        <div>
+                            <h3>
+                                @item.EventName
+                            </h3>
+                            <p class="mb-1">
+                                📍 @item.Location
+                            </p>
+                            <p class="mb-3">
+                                🏅 @item.Distance km
+                            </p>
+                            <a asp-action="Details" asp-route-id="@item.EventID" class="stretched-link race-link">
+                                View event →
+                            </a>
+                        </div>
+                    </div>
+                </article>
+            </div>
+        }
+    </div>
+}
+</section>
