@@ -1,0 +1,119 @@
+@model List<EnrolmentModel>
+@{
+    ViewData["Title"] = "Event participants";
+    var eventId = (int)ViewBag.EventId;
+}
+    <section class="container section-space">
+        <div class="section-heading">
+            <div>
+                <span class="eyebrow text-orange">
+                    Race operations
+                </span>
+                <h1>
+                    Participants and enrolments
+                </h1>
+            </div>
+            <a asp-action="Events" class="btn btn-outline-dark">
+                Back to events
+            </a>
+        </div>
+        @if(Model.Count == 0){
+            <div class="empty-state">
+                <div class="empty-icon">
+                    👟
+                </div>
+                <h2>
+                    No entries yet
+                </h2>
+                <p>
+                    Participant entries will appear here.
+                </p>
+            </div>
+        }
+    else{
+        <div class="table-card">
+            <div class="table-responsive">
+                <table class="table align-middle">
+                    <thead>
+                        <tr>
+                            <th>
+                                Participant
+                            </th>
+                            <th>
+                                Category
+                            </th>
+                            <th>
+                                Entered
+                            </th>
+                            <th>
+                                Status
+                            </th>
+                            <th>
+                                Update
+                            </th>
+                            <th>
+                                Result
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach(var item in Model){
+                            <tr>
+                                <td>
+                                    <strong>
+                                        @item.Participant?.FirstName @item.Participant?.LastName
+                                    </strong>
+                                    <br/>
+                                    <small>
+                                        @item.Participant?.Email
+                                    </small>
+                                </td>
+                                <td>
+                                    @item.Category.CategoryName
+                                </td>
+                                <td>
+                                    @item.EnrolmentDate.ToString("dd MMM yyyy")
+                                </td>
+                                <td>
+                                    <span class="status status-@item.EnrolmentStatus.ToLowerInvariant()">
+                                        @item.EnrolmentStatus
+                                    </span>
+                                </td>
+                                <td>
+                                    <form asp-action="UpdateStatus" method="post" class="d-flex gap-2">
+                                        <input type="hidden" name="id" value="@item.EnrolmentID"/>
+                                        <input type="hidden" name="eventId" value="@eventId"/>
+                                        <select name="enrolmentStatus" class="form-select form-select-sm">
+                                            <option selected="@(item.EnrolmentStatus == "Pending")">
+                                                Pending
+                                            </option>
+                                            <option selected="@(item.EnrolmentStatus == "Confirmed")">
+                                                Confirmed
+                                            </option>
+                                            <option selected="@(item.EnrolmentStatus == "Cancelled")">
+                                                Cancelled
+                                            </option>
+                                        </select>
+                                        <button class="btn btn-sm btn-dark">
+                                            Save
+                                        </button>
+                                    </form>
+                                </td>
+                                <td>
+                                    @if(item.EnrolmentStatus == "Confirmed"){
+                                        <a asp-action="AddResult"
+                                           asp-route-enrolmentId="@item.EnrolmentID"
+                                           asp-route-eventId="@eventId"
+                                           class="btn btn-sm btn-race">
+                                            Add result
+                                        </a>
+                                    }
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    }
+</section>
