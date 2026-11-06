@@ -1,0 +1,88 @@
+@model RegisterViewModel
+@{
+    ViewData["Title"] = "Join RaceDay";
+}
+<section class="container section-space narrow-page">
+    <span class="eyebrow text-orange">
+        Create your account
+    </span>
+    <h1>
+        Join the RaceDay community
+    </h1>
+    <p class="lead">
+        Register as a Participant to enter events or as an Organiser to run them.
+    </p>
+    <form method="post" class="form-card mt-4">
+        <div asp-validation-summary="ModelOnly" class="text-danger mb-3">
+        </div>
+        <div class="row g-3">
+            <div class="col-md-6">
+                <label asp-for="FirstName" class="form-label">
+                </label>
+                <input asp-for="FirstName" class="form-control"/>
+                <span asp-validation-for="FirstName" class="text-danger">
+                </span>
+            </div>
+            <div class="col-md-6">
+                <label asp-for="LastName" class="form-label">
+                </label>
+                <input asp-for="LastName" class="form-control"/>
+                <span asp-validation-for="LastName" class="text-danger">
+                </span>
+            </div>
+            <div class="col-md-6">
+                <label asp-for="Email" class="form-label">
+                </label>
+                <input asp-for="Email" class="form-control"/>
+                <span asp-validation-for="Email" class="text-danger">
+                </span>
+            </div>
+            <div class="col-md-6">
+                <label asp-for="PhoneNumber" class="form-label">
+                    Phone number
+                </label>
+                <input asp-for="PhoneNumber" class="form-control"/>
+            </div>
+            <div class="col-md-6">
+                <label asp-for="DateOfBirth" class="form-label">
+                    Date of birth
+                </label>
+                <input asp-for="DateOfBirth" class="form-control"/>
+            </div>
+            <div class="col-md-6">
+                <label asp-for="RoleName" class="form-label">
+                    I want to
+                </label>
+                <select asp-for="RoleName" class="form-select">
+                    <option value="Participant">
+                        Participate in events
+                    </option>
+                    <option value="Organiser">
+                        Organise events
+                    </option>
+                </select>
+            </div>
+            <div class="col-md-6">
+                <label asp-for="Password" class="form-label">
+                </label>
+                <input asp-for="Password" class="form-control"/>
+                <span asp-validation-for="Password" class="text-danger">
+                </span>
+            </div>
+            <div class="col-md-6">
+                <label asp-for="ConfirmPassword" class="form-label">
+                    Confirm password
+                </label>
+                <input asp-for="ConfirmPassword" class="form-control"/>
+                <span asp-validation-for="ConfirmPassword" class="text-danger">
+                </span>
+            </div>
+        </div>
+        <button class="btn btn-race btn-lg mt-4">
+            Create my account
+        </button>
+    </form>
+</section>
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
