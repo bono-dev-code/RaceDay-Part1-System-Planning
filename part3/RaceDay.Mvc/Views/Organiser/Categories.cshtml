@@ -1,0 +1,52 @@
+@model List<CategoryModel>
+@{
+    ViewData["Title"] = "Manage categories";
+    var eventId = (int)ViewBag.EventId;
+}
+    <section class="container section-space">
+        <div class="section-heading">
+            <div>
+                <span class="eyebrow text-orange">
+                    Event setup
+                </span>
+                <h1>
+                    Categories
+                </h1>
+            </div>
+            <a asp-action="CreateCategory" asp-route-eventId="@eventId" class="btn btn-race">
+                + Add category
+            </a>
+        </div>
+        <div class="row g-3">
+            @foreach(var item in Model){
+                <div class="col-md-6 col-xl-4">
+                    <article class="category-card h-100">
+                        <span class="category-type">
+                            @item.CategoryType
+                        </span>
+                        <h2>
+                            @item.CategoryName
+                        </h2>
+                        <p>
+                            @item.Description
+                        </p>
+                        <div class="d-flex gap-2 mt-auto">
+                            <a asp-action="EditCategory" asp-route-id="@item.CategoryID" class="btn btn-sm btn-outline-dark">
+                                Edit
+                            </a>
+                            <form asp-action="DeleteCategory" method="post" data-confirm="Delete this unused category?">
+                                <input type="hidden" name="id" value="@item.CategoryID"/>
+                                <input type="hidden" name="eventId" value="@eventId"/>
+                                <button class="btn btn-sm btn-outline-danger">
+                                    Delete
+                                </button>
+                            </form>
+                        </div>
+                    </article>
+                </div>
+            }
+        </div>
+        <a asp-action="Events" class="btn btn-link mt-4">
+            ← Back to events
+        </a>
+    </section>
