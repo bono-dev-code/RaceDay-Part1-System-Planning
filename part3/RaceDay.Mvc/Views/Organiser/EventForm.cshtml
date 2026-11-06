@@ -1,0 +1,92 @@
+@model EventFormModel
+@{
+    var editing = Model.EventID > 0;
+    ViewData["Title"] = editing ? "Edit event" : "Create event";
+}
+<section class="container section-space narrow-page">
+    <span class="eyebrow text-orange">
+        Organiser tools
+    </span>
+    <h1>
+        @(editing ? "Edit event" : "Create a new event")
+    </h1>
+    <p class="lead">
+        Give participants everything they need to prepare for race day.
+    </p>
+    <form method="post" enctype="multipart/form-data" class="form-card mt-4">
+        <input asp-for="EventID" type="hidden"/>
+        <div asp-validation-summary="ModelOnly" class="text-danger mb-3">
+        </div>
+        <div class="row g-3">
+            <div class="col-12">
+                <label asp-for="EventName" class="form-label">
+                    Event name
+                </label>
+                <input asp-for="EventName" class="form-control"/>
+                <span asp-validation-for="EventName" class="text-danger">
+                </span>
+            </div>
+            <div class="col-12">
+                <label asp-for="Description" class="form-label">
+                </label>
+                <textarea asp-for="Description" class="form-control" rows="4">
+                </textarea>
+                <span asp-validation-for="Description" class="text-danger">
+                </span>
+            </div>
+            <div class="col-md-6">
+                <label asp-for="EventDate" class="form-label">
+                    Date and start time
+                </label>
+                <input asp-for="EventDate" type="datetime-local" class="form-control"/>
+            </div>
+            <div class="col-md-6">
+                <label asp-for="Location" class="form-label">
+                </label>
+                <input asp-for="Location" class="form-control"/>
+            </div>
+            <div class="col-md-6">
+                <label asp-for="Distance" class="form-label">
+                    Distance (km)
+                </label>
+                <input asp-for="Distance" class="form-control"/>
+            </div>
+            <div class="col-md-6">
+                <label asp-for="EventType" class="form-label">
+                    Event type
+                </label>
+                <select asp-for="EventType" class="form-select">
+                    <option>
+                        Run
+                    </option>
+                    <option>
+                        Walk
+                    </option>
+                    <option>
+                        Cycle
+                    </option>
+                </select>
+            </div>
+            <div class="col-12">
+                <label asp-for="BannerImage" class="form-label">
+                    Event banner
+                </label>
+                <input asp-for="BannerImage" class="form-control" accept=".jpg,.jpeg,.png,.webp"/>
+                <div class="form-text">
+                    JPG, PNG or WebP, maximum 5 MB. The image is uploaded through the API to Azure Blob Storage.
+                </div>
+            </div>
+        </div>
+        <div class="d-flex gap-2 mt-4">
+            <button class="btn btn-race">
+                @(editing ? "Save changes" : "Create event")
+            </button>
+            <a asp-action="Events" class="btn btn-outline-dark">
+                Cancel
+            </a>
+        </div>
+    </form>
+</section>
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
