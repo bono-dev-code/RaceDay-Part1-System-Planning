@@ -1,0 +1,140 @@
+@model DashboardModel
+@{
+    ViewData["Title"] = "Organiser dashboard";
+}
+<section class="dashboard-hero">
+    <div class="container">
+        <span class="eyebrow">
+            Organiser command centre
+        </span>
+        <div class="section-heading text-white">
+            <div>
+                <h1>
+                    Make every race count.
+                </h1>
+                <p>
+                    Track your upcoming events and participant activity.
+                </p>
+            </div>
+            <a asp-action="CreateEvent" class="btn btn-race btn-lg">
+                + Create event
+            </a>
+        </div>
+    </div>
+</section>
+<section class="container dashboard-lift">
+    <div class="row g-3">
+        <div class="col-md-4">
+            <div class="metric-card">
+                <span>
+                    Total events
+                </span>
+                <strong>
+                    @Model.TotalEvents
+                </strong>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="metric-card">
+                <span>
+                    Total enrolments
+                </span>
+                <strong>
+                    @Model.TotalEnrolments
+                </strong>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="metric-card accent">
+                <span>
+                    Upcoming events
+                </span>
+                <strong>
+                    @Model.UpcomingEvents
+                </strong>
+            </div>
+        </div>
+    </div>
+    <div class="section-heading mt-5">
+        <div>
+            <span class="eyebrow text-orange">
+                Live overview
+            </span>
+            <h2>
+                Your event activity
+            </h2>
+        </div>
+        <a asp-action="Events" class="race-link">
+            Manage all events →
+        </a>
+    </div>
+    <div class="table-card">
+        <div class="table-responsive">
+            <table class="table align-middle">
+                <thead>
+                    <tr>
+                        <th>
+                            Event
+                        </th>
+                        <th>
+                            Date
+                        </th>
+                        <th>
+                            Location
+                        </th>
+                        <th>
+                            Enrolments
+                        </th>
+                        <th>
+                            Pending
+                        </th>
+                        <th>
+                            Confirmed
+                        </th>
+                        <th>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach(var item in Model.Events){
+                        <tr>
+                            <td>
+                                <strong>
+                                    @item.EventName
+                                </strong>
+                                <br/>
+                                <small>
+                                    @item.EventType
+                                </small>
+                            </td>
+                            <td>
+                                @item.EventDate.ToString("dd MMM yyyy")
+                            </td>
+                            <td>
+                                @item.Location
+                            </td>
+                            <td>
+                                @item.EnrolmentCount
+                            </td>
+                            <td>
+                                <span class="status status-pending">
+                                    @item.PendingCount
+                                </span>
+                            </td>
+                            <td>
+                                <span class="status status-confirmed">
+                                    @item.ConfirmedCount
+                                </span>
+                            </td>
+                            <td>
+                                <a asp-action="Enrolments" asp-route-eventId="@item.EventID" class="btn btn-sm btn-outline-dark">
+                                    View
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</section>
