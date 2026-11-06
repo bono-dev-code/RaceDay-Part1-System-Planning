@@ -1,0 +1,59 @@
+@model UserProfile
+@{
+    ViewData["Title"] = "My profile";
+}
+<section class="container section-space narrow-page">
+    <div class="profile-header">
+        <div class="profile-avatar">
+            @if (Model.ProfilePictureUrl is not null) {
+                <img src="@Model.ProfilePictureUrl" alt="@Model.FirstName profile picture"/>
+                } else {
+                    <span>
+                        @Model.FirstName.FirstOrDefault()@Model.LastName.FirstOrDefault()
+                    </span>
+                }
+            </div>
+            <div>
+                <span class="role-pill dark">
+                    @Model.Role
+                </span>
+                <h1>
+                    @Model.FirstName @Model.LastName
+                </h1>
+                <p>
+                    @Model.Email
+                </p>
+            </div>
+        </div>
+        <div class="form-card mt-4">
+            <div class="row g-4">
+                <div class="col-md-6">
+                    <span class="detail-label">
+                        Phone number
+                    </span>
+                    <strong>
+                        @(Model.PhoneNumber ?? "Not provided")
+                    </strong>
+                </div>
+                <div class="col-md-6">
+                    <span class="detail-label">
+                        Date of birth
+                    </span>
+                    <strong>
+                        @(Model.DateOfBirth?.ToString("dd MMMM yyyy") ?? "Not provided")
+                    </strong>
+                </div>
+                <div class="col-md-6">
+                    <span class="detail-label">
+                        Member since
+                    </span>
+                    <strong>
+                        @Model.CreatedAt.ToString("dd MMMM yyyy")
+                    </strong>
+                </div>
+            </div>
+            <a asp-action="Edit" class="btn btn-race mt-4">
+                Edit profile
+            </a>
+        </div>
+    </section>
