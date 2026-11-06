@@ -1,0 +1,71 @@
+@model ResultFormModel
+@{
+    var editing = Model.ResultID > 0;
+    ViewData["Title"] = editing ? "Edit result" : "Publish result";
+}
+<section class="container section-space narrow-page">
+    <span class="eyebrow text-orange">
+        Official result
+    </span>
+    <h1>
+        @(editing ? "Correct race result" : "Publish race result")
+    </h1>
+    <p>
+        Results can only be recorded for confirmed enrolments after the event has concluded.
+    </p>
+    <form method="post"
+          asp-action="@(editing ? "EditResult" : "AddResult")"
+          class="form-card mt-4">
+        <input asp-for="ResultID" type="hidden" />
+        <input asp-for="EventID" type="hidden" />
+        <input asp-for="EnrolmentID" type="hidden" />
+        <div asp-validation-summary="ModelOnly"
+             class="text-danger mb-3">
+        </div>
+        <div class="mb-3">
+            <label asp-for="FinishTime" class="form-label">
+                Finish time (HH:MM:SS)
+            </label>
+            <input asp-for="FinishTime"
+                   type="text"
+                   class="form-control"
+                   placeholder="01:35:20"
+                   pattern="([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]"
+                   title="Enter the finish time using HH:MM:SS, for example 01:35:20."
+                   required />
+            <div class="form-text">
+                Enter hours, minutes and seconds, for example 01:35:20.
+            </div>
+            <span asp-validation-for="FinishTime"
+                  class="text-danger">
+            </span>
+        </div>
+        <div class="mb-4">
+            <label asp-for="FinishingPosition" class="form-label">
+                Finishing position
+            </label>
+            <input asp-for="FinishingPosition"
+                   type="number"
+                   min="1"
+                   step="1"
+                   class="form-control"
+                   placeholder="1"
+                   required />
+            <span asp-validation-for="FinishingPosition"
+                  class="text-danger">
+            </span>
+        </div>
+        <button type="submit" class="btn btn-race">
+            @(editing ? "Save result" : "Publish result")
+        </button>
+        <a asp-action="@(editing ? "Results" : "Enrolments")"
+           asp-route-eventId="@Model.EventID"
+           class="btn btn-outline-dark">
+            Cancel
+        </a>
+    </form>
+</section>
+@section Scripts
+{
+    <partial name="_ValidationScriptsPartial" />
+}
