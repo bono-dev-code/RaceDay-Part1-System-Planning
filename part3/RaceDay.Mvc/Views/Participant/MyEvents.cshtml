@@ -1,0 +1,92 @@
+@model List<EnrolmentModel>
+@{
+    ViewData["Title"] = "My events";
+}
+    <section class="container section-space">
+        <div class="section-heading">
+            <div>
+                <span class="eyebrow text-orange">
+                    Participant area
+                </span>
+                <h1>
+                    My events
+                </h1>
+            </div>
+            <a asp-controller="Home" asp-action="Index" class="btn btn-race">
+                Find another event
+            </a>
+        </div>
+        @if (Model.Count == 0) {
+            <div class="empty-state">
+                <div class="empty-icon">
+                    🏃
+                </div>
+                <h2>
+                    Your race calendar is waiting
+                </h2>
+                <p>
+                    Explore upcoming events and enter a category.
+                </p>
+            </div>
+        }
+    else {
+        <div class="table-card">
+            <div class="table-responsive">
+                <table class="table align-middle">
+                    <thead>
+                        <tr>
+                            <th>
+                                Event
+                            </th>
+                            <th>
+                                Date
+                            </th>
+                            <th>
+                                Category
+                            </th>
+                            <th>
+                                Status
+                            </th>
+                            <th>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach(var item in Model){
+                            <tr>
+                                <td>
+                                    <strong>
+                                        @item.EventInfo.EventName
+                                    </strong>
+                                </td>
+                                <td>
+                                    @item.EventInfo.EventDate.ToString("dd MMM yyyy")
+                                </td>
+                                <td>
+                                    @item.Category.CategoryName
+                                </td>
+                                <td>
+                                    <span class="status status-@item.EnrolmentStatus.ToLowerInvariant()">
+                                        @item.EnrolmentStatus
+                                    </span>
+                                </td>
+                                <td class="text-end">
+                                    @if(item.EnrolmentStatus != "Confirmed"){
+                                        <form asp-action="Cancel"
+                                              asp-route-id="@item.EnrolmentID"
+                                              method="post"
+                                              data-confirm="Cancel this enrolment?">
+                                            <button class="btn btn-sm btn-outline-danger">
+                                                Cancel
+                                            </button>
+                                        </form>
+                                    }
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    }
+</section>

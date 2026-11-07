@@ -1,0 +1,69 @@
+@model List<ResultModel>
+@{
+    ViewData["Title"] = "My results";
+}
+    <section class="container section-space">
+        <span class="eyebrow text-orange">
+            Performance history
+        </span>
+        <h1>
+            My results
+        </h1>
+        <p class="lead">
+            Every finish tells a story. Here are yours.
+        </p>
+        @if(Model.Count == 0){
+            <div class="empty-state">
+                <div class="empty-icon">
+                    🏅
+                </div>
+                <h2>
+                    No published results yet
+                </h2>
+                <p>
+                    Your confirmed race results will appear here.
+                </p>
+            </div>
+        }
+    else{
+        <div class="row g-4 mt-2">
+            @foreach(var item in Model){
+                <div class="col-md-6">
+                    <article class="result-card">
+                        <div class="position">
+                            <span>
+                                #
+                            </span>
+                            @item.FinishingPosition
+                        </div>
+                        <div>
+                            <span class="category-type">
+                                @item.Category
+                            </span>
+                            <h2>
+                                @item.EventName
+                            </h2>
+                            <p>
+                                @item.EventDate.ToString("dd MMMM yyyy")
+                            </p>
+                            <div class="result-time">
+                                @item.FinishTime.ToString(@"hh\:mm\:ss")
+                            </div>
+                            <p class="mb-0">
+                                Position
+                                <strong>
+                                    @item.FinishingPosition
+                                </strong>
+                                out of
+                                <strong>
+                                    @item.TotalFinishers
+                                </strong>
+                                finisher@(item.TotalFinishers == 1 ? "" : "s")
+                            </p>
+                        </div>
+                    </article>
+                </div>
+            }
+        </div>
+    }
+</section>
