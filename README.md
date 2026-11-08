@@ -495,3 +495,35 @@ RaceDay-Part1-System-Planning/
 ├── .gitignore
 └── README.md
 ```
+
+## Authentication and role-based navigation
+
+Registration and login are performed through the Part 2 API. After successful authentication, the MVC application stores the user's ID, first name, role and individual API session-cookie value in the server-side session. Protected MVC actions use role-aware authorization filters, while protected API requests forward the current visitor's API cookie.
+
+- Unauthenticated users can browse upcoming events and access registration and login.
+- Organisers see links for their dashboard, events, categories, enrolments and results.
+- Participants see links for upcoming events, My Events, My Results and their profile.
+- A Participant cannot open Organiser pages, and an Organiser cannot open Participant-only pages.
+- Logout clears both the API session and MVC session.
+
+## Part 3 prerequisites
+
+- .NET 8 SDK
+- SQL Server Express LocalDB
+- An Azure Storage account and Blob container access
+- Docker Desktop for the container demonstration
+- The Part 2 database migration
+
+## Configure Azure Blob Storage
+
+Do not commit a real storage key. Configure the API locally with user secrets:
+
+```powershell
+cd part2/RaceDay.Api
+dotnet user-secrets init
+dotnet user-secrets set "ConnectionStrings:AzureBlobStorage" "AZURE_STORAGE_CONNECTION_STRING"
+dotnet user-secrets set "AzureBlobStorage:ContainerName" "raceday-images"
+cd ../..
+```
+
+The API accepts JPG, JPEG, PNG and WebP images up to 5 MB. It uploads the file to Azure Blob Storage and stores the resulting URL in SQL Server. The MVC application never connects to Azure directly.
