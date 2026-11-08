@@ -697,3 +697,9 @@ The demonstration should cover the MVC structure, API communication, registratio
 ## Part 3 AI usage disclosure
 
 I used AI-assisted development tools to help explain requirements, review architecture, suggest code, troubleshoot implementation issues and improve documentation. I reviewed, tested and adapted the resulting work for the RaceDay project.
+
+## Part 3 conclusion
+
+Part 3 transforms the RaceDay RESTful API into a complete role-based web experience. Organisers can plan and operate events while Participants can discover events, enter categories, track enrolment status and view results. Azure Blob Storage, Docker, automated testing and continuous integration complete the final production-focused portfolio implementation.
+
+This project was developed for educational and academic assessment purposes as part of the PROG6212 Portfolio of Evidence.
