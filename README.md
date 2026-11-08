@@ -614,3 +614,23 @@ After logging in as a Participant, I can:
 5. Cancel an eligible enrolment before a result exists.
 6. View finishing time, finishing position and total finisher count in My Results.
 7. Edit profile details and upload a profile picture.
+
+
+## Azure Blob Storage integration
+
+The MVC application sends selected image files to the API using multipart form data. The API validates the extension and 5 MB size limit, generates a unique blob name, uploads the file to the configured `raceday-images` container and stores the returned URL in SQL Server. Event banners and profile pictures are then displayed in the MVC interface from their stored URLs. Storage credentials are configured with user secrets and are not committed to GitHub.
+
+## User-interface design
+
+The interface uses a consistent RaceDay sporting theme, Bootstrap components, responsive layouts and clear typography. Navigation changes according to the authenticated role. Forms include labels, validation messages and preserved input, while status badges distinguish pending, confirmed and cancelled enrolments. The layout adapts for desktop and smaller screens.
+
+## Part 3 automated verification
+
+Run the existing API integration tests and build the MVC project:
+
+```powershell
+dotnet test part2/RaceDay.Api.Tests/RaceDay.Api.Tests.csproj --configuration Release
+dotnet build part3/RaceDay.Mvc/RaceDay.Mvc.csproj --configuration Release
+```
+
+The `.github/workflows/validate-part3.yml` workflow validates the Part 3 structure, restores and builds the complete solution, runs the API integration tests and builds the MVC Docker image.
