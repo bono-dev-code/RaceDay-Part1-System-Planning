@@ -634,3 +634,62 @@ dotnet build part3/RaceDay.Mvc/RaceDay.Mvc.csproj --configuration Release
 ```
 
 The `.github/workflows/validate-part3.yml` workflow validates the Part 3 structure, restores and builds the complete solution, runs the API integration tests and builds the MVC Docker image.
+
+
+## Part 3 evidence
+
+All evidence images are stored in `part3/docs/Screenshots/`.
+
+### Responsive home page
+
+![RaceDay responsive home page](part3/docs/Screenshots/part3-home.png)
+
+### Registration and authentication
+
+![Successful RaceDay authentication](part3/docs/Screenshots/part3-authentication.png)
+
+### Role-based navigation
+
+![Navigation displayed according to the authenticated role](part3/docs/Screenshots/part3-role-navigation.png)
+
+### Organiser dashboard
+
+![Organiser dashboard with owned-event and enrolment summaries](part3/docs/Screenshots/part3-organiser-dashboard.png)
+
+### Event management
+
+![Organiser event-management interface](part3/docs/Screenshots/part3-event-management.png)
+
+### Participant enrolment
+
+![Participant event-enrolment workflow](part3/docs/Screenshots/part3-participant-enrolment.png)
+
+### Participant results
+
+![Participant results with finishing position and total finishers](part3/docs/Screenshots/part3-participant-results.png)
+
+### Azure event banner
+
+![Event banner uploaded to Azure Blob Storage](part3/docs/Screenshots/part3-azure-banner.png)
+
+### Azure profile picture
+
+![Profile picture uploaded to Azure Blob Storage](part3/docs/Screenshots/part3-azure-profile-picture.png)
+
+### Docker container
+
+![RaceDay MVC application running in Docker](part3/docs/Screenshots/part3-docker-running.png)
+
+### Automated tests
+
+![All 17 automated tests passing](part3/docs/Screenshots/part3-tests-passed.png)
+
+### Successful Part 3 CI workflow
+
+![Successful Part 3 GitHub Actions workflow](part3/docs/Screenshots/part3-ci-success.png)
+
+## Part 3 video demonstration
+
+[Watch the RaceDay Part 3 Video Demonstration](PART_3_YOUTUBE_URL_TO_BE_ADDED)
+
+The demonstration should cover the MVC structure, API communication, registration and login, both roles, the full event workflow, Azure Blob Storage, automated tests, Docker execution and the successful GitHub Actions workflow.
