@@ -451,3 +451,47 @@ Part 3 delivers a responsive ASP.NET Core MVC frontend that consumes the Part 2 
 - Friendly validation, authorization and API error messages
 - Docker support for the MVC application
 - GitHub Actions validation for the API, tests, MVC application and Docker image
+
+
+## Part 3 architecture
+
+```text
+Browser
+  -> RaceDay.Mvc (views, forms, role navigation and MVC session)
+      -> RaceDay.Api (authentication, authorization and business rules)
+          -> SQL Server (structured application data)
+          -> Azure Blob Storage (event banners and profile pictures)
+```
+
+The MVC application stores the signed-in user's ID, first name and role in its server-side session. It also stores only that visitor's API session-cookie value and forwards the value to the API on protected requests. A shared cookie container is not used, preventing authenticated sessions from being mixed between visitors.
+
+## Part 3 repository structure
+
+```text
+RaceDay-Part1-System-Planning/
+├── .github/
+│   └── workflows/
+│       ├── validate-part1.yml
+│       ├── validate-part2.yml
+│       └── validate-part3.yml
+├── docs/                              # Part 1 documentation
+├── part2/
+│   ├── RaceDay.Api/                   # RESTful API and Azure uploads
+│   ├── RaceDay.Api.Tests/             # Integration tests
+│   └── docs/Screenshots/              # Part 2 evidence
+├── part3/
+│   ├── RaceDay.Mvc/
+│   │   ├── Controllers/               # Account and role workflows
+│   │   ├── Filters/                   # MVC session authorization
+│   │   ├── Models/                    # API responses and form models
+│   │   ├── Services/                  # Typed API client and cookie forwarding
+│   │   ├── Views/                     # Responsive Razor views
+│   │   ├── wwwroot/                   # CSS, JavaScript and static assets
+│   │   ├── Dockerfile
+│   │   ├── Program.cs
+│   │   └── RaceDay.Mvc.csproj
+│   └── docs/Screenshots/              # Part 3 evidence
+├── RaceDay.sln
+├── .gitignore
+└── README.md
+```
