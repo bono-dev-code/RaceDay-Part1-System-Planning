@@ -428,3 +428,26 @@ I also used Cursor to help explain programming concepts, review code, and unders
 RaceDay Part 1 established the system-planning and database foundation, while Part 2 transformed that design into a functional RESTful Web API. The completed solution demonstrates database integration, secure password storage, session authentication, role-based authorization, CRUD operations, Swagger documentation, automated integration testing and continuous integration.
 
 This project was developed for educational and academic assessment purposes as part of the PROG6212 Portfolio of Evidence. 
+
+---
+
+# Part 3: ASP.NET Core MVC Application
+
+Part 3 delivers a responsive ASP.NET Core MVC frontend that consumes the Part 2 RESTful API for every data operation. The MVC project does not connect to the database and does not reproduce API business rules. Authentication state is maintained with per-user MVC sessions while the API session cookie is forwarded securely for protected requests.
+
+## Part 3 features
+
+- Public upcoming-event browsing with event type, date and location filters
+- Event details, banner, organiser and category information
+- API-backed registration, login, logout and session management
+- Distinct Organiser and Participant navigation
+- Organiser dashboard with owned-event and enrolment summaries
+- Organiser event, category, enrolment-status and result management
+- Participant event entry, My Events and My Results
+- Participant finishing position with total finisher count
+- User profile viewing and editing
+- Event banner and profile-picture upload through the API to Azure Blob Storage
+- Responsive RaceDay sporting design with accessible Bootstrap components
+- Friendly validation, authorization and API error messages
+- Docker support for the MVC application
+- GitHub Actions validation for the API, tests, MVC application and Docker image
