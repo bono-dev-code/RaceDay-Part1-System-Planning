@@ -32,7 +32,33 @@ public class ApiIntegrationTests : IClassFixture<CustomWebApplicationFactory>
 
     // Test access permissions, Swagger and logout
     [Fact] public async Task OrganiserEndpoint_RejectsUnauthenticatedRequest() { var c = Client(); Assert.Equal(HttpStatusCode.Unauthorized, (await c.GetAsync("/api/organisers/me/events")).StatusCode); }
+    [Fact] public async Task Organiser_Dashboard_ReturnsEventSummary() { var c = Client(); await Login(c, "organiser@raceday.test"); await c.PostAsJsonAsync("/api/events", EventBody()); Assert.Equal(HttpStatusCode.OK, (await c.GetAsync("/api/organisers/me/dashboard")).StatusCode); }
     [Fact] public async Task Participant_CannotViewOrganiserEventEnrolments() { var c = Client(); await Login(c, "participant@raceday.test"); Assert.Equal(HttpStatusCode.Forbidden, (await c.GetAsync("/api/events/1/enrolments")).StatusCode); }
+    [Fact] public async Task Organiser_CanUploadEventBanner()
+    {
+        var c = Client(); await Login(c, "organiser@raceday.test");
+        var ev = await (await c.PostAsJsonAsync("/api/events", EventBody())).Content.ReadFromJsonAsync<IdResponse>();
+        using var form = new MultipartFormDataContent();
+        form.Add(new ByteArrayContent([1, 2, 3]) { Headers = { ContentType = new("image/jpeg") } }, "image", "banner.jpg");
+        Assert.Equal(HttpStatusCode.OK, (await c.PostAsync($"/api/events/{ev!.eventID}/banner", form)).StatusCode);
+    }
+    [Fact] public async Task ConfirmedParticipant_CanReceiveAndViewResultTotals()
+    {
+        var organiser = Client(); await Login(organiser, "organiser@raceday.test");
+        var pastEvent = new { eventName = $"Completed Race {Guid.NewGuid()}", description = "Completed test event", eventDate = DateTime.UtcNow.AddDays(-1), location = "Polokwane", distance = 10.0, eventType = "Run" };
+        var ev = await (await organiser.PostAsJsonAsync("/api/events", pastEvent)).Content.ReadFromJsonAsync<IdResponse>();
+        var cat = await (await organiser.PostAsJsonAsync($"/api/events/{ev!.eventID}/categories", new { categoryName = $"Open-{Guid.NewGuid()}", categoryType = "Age" })).Content.ReadFromJsonAsync<CategoryIdResponse>();
+
+        var participant = Client(); await Login(participant, "participant@raceday.test");
+        var enrolment = await (await participant.PostAsJsonAsync($"/api/events/{ev.eventID}/enrolments", new { categoryId = cat!.categoryID })).Content.ReadFromJsonAsync<EnrolmentIdResponse>();
+
+        Assert.Equal(HttpStatusCode.OK, (await organiser.PutAsJsonAsync($"/api/enrolments/{enrolment!.enrolmentID}/status", new { enrolmentStatus = "Confirmed" })).StatusCode);
+        Assert.Equal(HttpStatusCode.Created, (await organiser.PostAsJsonAsync($"/api/enrolments/{enrolment.enrolmentID}/result", new { finishTime = "00:54:18", finishingPosition = 1 })).StatusCode);
+
+        var results = await participant.GetAsync("/api/results/me");
+        Assert.Equal(HttpStatusCode.OK, results.StatusCode);
+        Assert.Contains("\"totalFinishers\":1", await results.Content.ReadAsStringAsync());
+    }
     [Fact] public async Task Swagger_IsAvailable() { var c = Client(); Assert.Equal(HttpStatusCode.OK, (await c.GetAsync("/swagger/v1/swagger.json")).StatusCode); }
 
     [Fact] public async Task Logout_ClearsSession() { var c = Client(); await Login(c, "participant@raceday.test"); Assert.Equal(HttpStatusCode.OK, (await c.GetAsync("/api/users/me")).StatusCode); Assert.Equal(HttpStatusCode.NoContent, (await c.PostAsync("/api/auth/logout", null)).StatusCode); Assert.Equal(HttpStatusCode.Unauthorized, (await c.GetAsync("/api/users/me")).StatusCode); }
@@ -40,4 +66,5 @@ public class ApiIntegrationTests : IClassFixture<CustomWebApplicationFactory>
     private static object EventBody() => new { eventName = $"Race {Guid.NewGuid()}", description = "Test event", eventDate = DateTime.UtcNow.AddDays(30), location = "Thohoyandou", distance = 10.0, eventType = "Run" };
     private record IdResponse(int eventID);
     private record CategoryIdResponse(int categoryID);
+    private record EnrolmentIdResponse(int enrolmentID);
 }

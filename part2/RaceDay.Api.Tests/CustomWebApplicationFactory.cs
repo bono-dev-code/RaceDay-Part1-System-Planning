@@ -1,10 +1,12 @@
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using RaceDay.Api.Data;
 using RaceDay.Api.Models;
+using RaceDay.Api.Services;
 
 namespace RaceDay.Api.Tests;
 
@@ -21,6 +23,8 @@ public class CustomWebApplicationFactory : WebApplicationFactory<Program>
         {
             // Use an in-memory database for testing
             services.RemoveAll<DbContextOptions<RaceDayDbContext>>();services.RemoveAll<RaceDayDbContext>();
+            services.RemoveAll<IBlobStorageService>();
+            services.AddSingleton<IBlobStorageService, TestBlobStorageService>();
             services.AddDbContext<RaceDayDbContext>(o=>o.UseInMemoryDatabase(_databaseName));
             using var provider=services.BuildServiceProvider();using var scope=provider.CreateScope();var db=scope.ServiceProvider.GetRequiredService<RaceDayDbContext>();db.Database.EnsureCreated();Seed(db);
         });
@@ -34,5 +38,11 @@ public class CustomWebApplicationFactory : WebApplicationFactory<Program>
             new User{UserID=1,RoleID=1,FirstName="Nenguda",LastName="Bono",Email="organiser@raceday.test",PasswordHash=BCrypt.Net.BCrypt.HashPassword("Password1!")},
             new User{UserID=2,RoleID=2,FirstName="Mbuyelo",LastName="Nkuna",Email="participant@raceday.test",PasswordHash=BCrypt.Net.BCrypt.HashPassword("Password1!")});
         db.SaveChanges();
+    }
+
+    private sealed class TestBlobStorageService : IBlobStorageService
+    {
+        public Task<string> UploadImageAsync(IFormFile file, string folder, CancellationToken cancellationToken = default) =>
+            Task.FromResult($"https://storage.test/{folder}/test-image.jpg");
     }
 }
