@@ -1,0 +1,60 @@
+name: Build and Test Part 3
+
+on:
+  push:
+    branches: [main, master, part3-mvc]
+    paths:
+      - "part2/**"
+      - "part3/**"
+      - "RaceDay.sln"
+      - "README.md"
+      - ".github/workflows/validate-part3.yml"
+  pull_request:
+    branches: [main, master]
+    paths:
+      - "part2/**"
+      - "part3/**"
+      - "RaceDay.sln"
+      - "README.md"
+      - ".github/workflows/validate-part3.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build-test-docker:
+    name: Validate RaceDay Part 3
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up .NET 8
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: "8.0.x"
+
+      - name: Confirm Part 3 repository structure
+        shell: bash
+        run: |
+          test -f "part2/RaceDay.Api/RaceDay.Api.csproj"
+          test -f "part3/RaceDay.Mvc/RaceDay.Mvc.csproj"
+          test -d "part3/RaceDay.Mvc/Controllers"
+          test -d "part3/RaceDay.Mvc/Views"
+          test -f "part3/RaceDay.Mvc/Dockerfile"
+          test -f "README.md"
+          echo "Part 3 repository structure is valid."
+
+      - name: Restore solution dependencies
+        run: dotnet restore RaceDay.sln
+
+      - name: Build complete solution
+        run: dotnet build RaceDay.sln --configuration Release --no-restore
+
+      - name: Run API integration tests
+        run: dotnet test part2/RaceDay.Api.Tests/RaceDay.Api.Tests.csproj --configuration Release --no-build --verbosity normal
+
+      - name: Build MVC Docker image
+        run: docker build -f part3/RaceDay.Mvc/Dockerfile -t raceday-mvc:ci .
