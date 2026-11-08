@@ -693,3 +693,7 @@ All evidence images are stored in `part3/docs/Screenshots/`.
 [Watch the RaceDay Part 3 Video Demonstration](PART_3_YOUTUBE_URL_TO_BE_ADDED)
 
 The demonstration should cover the MVC structure, API communication, registration and login, both roles, the full event workflow, Azure Blob Storage, automated tests, Docker execution and the successful GitHub Actions workflow.
+
+## Part 3 AI usage disclosure
+
+I used AI-assisted development tools to help explain requirements, review architecture, suggest code, troubleshoot implementation issues and improve documentation. I reviewed, tested and adapted the resulting work for the RaceDay project.
