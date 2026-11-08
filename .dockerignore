@@ -1,0 +1,7 @@
+**/bin/
+**/obj/
+.git/
+.vs/
+docs/
+part2/docs/
+part3/docs/
