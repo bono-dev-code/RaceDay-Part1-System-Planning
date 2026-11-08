@@ -527,3 +527,31 @@ cd ../..
 ```
 
 The API accepts JPG, JPEG, PNG and WebP images up to 5 MB. It uploads the file to Azure Blob Storage and stores the resulting URL in SQL Server. The MVC application never connects to Azure directly.
+
+
+## Run Part 3 locally
+
+From the repository root, restore and build the complete solution:
+
+```powershell
+dotnet restore RaceDay.sln
+dotnet build RaceDay.sln
+```
+
+Start the Part 2 API in the first terminal:
+
+```powershell
+dotnet run --project part2/RaceDay.Api/RaceDay.Api.csproj --launch-profile https
+```
+
+Start the Part 3 MVC application in a second terminal:
+
+```powershell
+dotnet run --project part3/RaceDay.Mvc/RaceDay.Mvc.csproj --launch-profile https
+```
+
+Open the MVC application at:
+
+```text
+https://localhost:7275
+```
