@@ -577,3 +577,40 @@ docker run --rm -p 8080:8080 --add-host=host.docker.internal:host-gateway -e Api
 ```
 
 Open `http://localhost:8080`. The same MVC pages and API-backed workflows are available in the container.
+
+
+## Part 3 API extensions
+
+| Method | Endpoint | Role | Purpose |
+|---|---|---|---|
+| `GET` | `/api/organisers/me/dashboard` | Organiser | Return owned-event and enrolment summaries |
+| `POST` | `/api/events/{eventId}/banner` | Organiser owner | Upload an event banner to Azure Blob Storage |
+| `POST` | `/api/users/me/profile-picture` | Authenticated | Upload a profile picture to Azure Blob Storage |
+
+The Participant results response also includes `totalFinishers`. Result creation is rejected until the event date has passed.
+
+## Organiser workflow
+
+After logging in as an Organiser, I can:
+
+1. View a dashboard containing owned-event and enrolment summaries.
+2. Create, view, edit and delete owned events.
+3. Upload an event banner through the API to Azure Blob Storage.
+4. Add and manage age or distance categories.
+5. View Participants enrolled in an owned event.
+6. update an enrolment to `Pending`, `Confirmed` or `Cancelled`.
+7. Publish, correct or delete a result for a confirmed enrolment after the event has concluded.
+
+Ownership checks remain inside the API, so an Organiser cannot manage another Organiser's event.
+
+## Participant workflow
+
+After logging in as a Participant, I can:
+
+1. Browse upcoming events and apply event-type, date and location filters.
+2. View an event's details, banner, organiser and available categories.
+3. Select a category and enrol in the event.
+4. View enrolment dates and statuses in My Events.
+5. Cancel an eligible enrolment before a result exists.
+6. View finishing time, finishing position and total finisher count in My Results.
+7. Edit profile details and upload a profile picture.
