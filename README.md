@@ -555,3 +555,25 @@ Open the MVC application at:
 ```text
 https://localhost:7275
 ```
+
+## Docker build and run
+
+Start the API on an HTTP address that the container can reach:
+
+```powershell
+dotnet run --project part2/RaceDay.Api/RaceDay.Api.csproj --no-launch-profile --urls http://0.0.0.0:5175
+```
+
+In another terminal, build the MVC image from the repository root:
+
+```powershell
+docker build -f part3/RaceDay.Mvc/Dockerfile -t raceday-mvc .
+```
+
+Run the MVC container with one command:
+
+```powershell
+docker run --rm -p 8080:8080 --add-host=host.docker.internal:host-gateway -e ApiSettings__BaseUrl=http://host.docker.internal:5175 raceday-mvc
+```
+
+Open `http://localhost:8080`. The same MVC pages and API-backed workflows are available in the container.
