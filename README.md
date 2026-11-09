@@ -688,9 +688,9 @@ All evidence images are stored in `part3/docs/Screenshots/`.
 
 ![Successful Part 3 GitHub Actions workflow](part3/docs/Screenshots/part3-ci-success.png)
 
-## Part 3 video demonstration
+## Part 3 video Presentation 
 
-[Watch the RaceDay Part 3 Video Demonstration](PART_3_YOUTUBE_URL_TO_BE_ADDED)
+[Watch the RaceDay Part 3 Video Demonstration](https://youtu.be/JkOPait0RZM)
 
 The demonstration should cover the MVC structure, API communication, registration and login, both roles, the full event workflow, Azure Blob Storage, automated tests, Docker execution and the successful GitHub Actions workflow.
 
